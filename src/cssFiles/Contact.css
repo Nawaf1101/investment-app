@@ -1,0 +1,23 @@
+.contact-form {
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .contact-form .form-control {
+    border-radius: 20px;
+    border: 1px solid #cccccc;
+  }
+  
+  .contact-form .btn-primary {
+    background-color: #489FAC; /* Replace with your button's color */
+    border: none;
+    border-radius: 20px;
+    padding: 10px;
+    margin-top: 10px;
+  }
+  
+  /* Optional: Overriding Bootstrap's primary color for the button's hover state */
+  .contact-form .btn-primary:hover {
+    background-color: #317F8B; /* A slightly darker shade for hover effect */
+  }

@@ -1,0 +1,77 @@
+.custom-nav-link {
+  position: relative;
+  overflow: hidden; /* Ensures the pseudo-element is contained within the nav-link's bounds */
+}
+
+.custom-nav-link::after {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 80%; /* Ensures the pseudo-element spans the full width */
+  height: 2px;
+  bottom: 0;
+  left: 50%; /* Centers the pseudo-element */
+  background-color: #fff; /* Change color as needed */
+  transition: transform 0.25s ease-in-out;
+  transform: translateX(-50%) scaleX(0); /* Initialize centered but with no width */
+  transform-origin: center bottom; /* Ensures the scaling is from the center */
+  z-index: 1; /* Ensure it's above the text */
+}
+
+.custom-nav-link:hover::after,
+.custom-nav-link:focus::after {
+  transform: translateX(-50%) scaleX(1); /* Expand the pseudo-element to full width on hover */
+  
+}
+
+.btn-light {
+  background-color: #489FAC !important;
+  border-color: #489FAC !important;
+}
+.btn-light:hover {
+  background-color: #368B98 !important;
+  border-color: #368B98 !important;
+}
+
+.pg-primary {
+  background-color: #4C95A0 !important;
+}
+.nav-bg{
+  background-color: #35717a !important;
+}
+
+.btn-outline-light {
+  color: #e6e6e6;
+  border-color: #368B98; /* or use Bootstrap's border utilities */
+}
+
+.btn-outline-light:hover {
+  color: #000000;
+  background-color: #2f828f;
+  border-color: #2f828f;
+}
+
+.btn-primary {
+  background-color: #67b3be !important;
+  border-color: #489FAC !important;
+}
+
+.btn-primary:hover {
+  background-color: #317F8B !important;
+  border-color: #317F8B !important;
+}
+
+.sign-up-button {
+  background-color: #ffffff !important;
+  color: black;
+  border-color: #ffffff; /* Assuming you want a white border */
+}
+
+.sign-up-button:hover {
+  background-color: #f8f9fa; /* Slightly grey background for hover, adjust as needed */
+  color: #ffffff !important; /* Typically, darker text on hover for better contrast */
+}
+
+.pg-body{
+  background-color: #fff;
+}
