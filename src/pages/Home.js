@@ -1,17 +1,51 @@
 import React from 'react';
-import { Button, Container, Row, Col, Form } from 'react-bootstrap';
+import { Button, Container, Row, Col, Form,Navbar,Nav } from 'react-bootstrap';
+import { HashLink } from 'react-router-hash-link';
+import { Link,NavLink } from 'react-router-dom';
 import investImage from "../images/Invest.png";
 import waveImage from "../images/wave.png";
-import villaImage from "../images/Villa.png"
-import Header from '../components/Header';
+import villaImage from "../images/Villa2.png"
+import villaImage2 from "../images/Villa.png"
 import '../cssFiles/Custom.css';
 import Footer from '../components/Footer';
+import Headroom from 'react-headroom';
+
 
 const Home = () => {
   return (
     <>
       <section className="pg-primary vh-100 d-flex flex-column" id="home-section">
-        <Header />
+      <Headroom>
+      <Navbar  variant="dark" expand="lg" className="nav-bg" style={{ paddingLeft: '2rem' }}>
+        <Navbar.Brand href="#home">
+          <img src={villaImage} alt="Villa" className="d-inline-block align-top" style={{ maxHeight: '100px' }} />
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav" className="justify-content-center">
+          <Nav className="align-items-center">
+            <HashLink smooth to="#home-section" className="nav-link custom-nav-link">Home</HashLink>
+            <HashLink smooth to="#about-section" className="nav-link custom-nav-link">About</HashLink>
+            <HashLink smooth to="#contact-section" className="nav-link custom-nav-link">Contact</HashLink>
+          </Nav>
+        </Navbar.Collapse>
+        <div className="ms-auto">
+            <NavLink
+              variant="outline-light"
+              to="/login"
+              className="mx-2 text-white"
+              style={{ textDecoration: 'none' }}
+            >
+              Login
+            </NavLink>
+            <NavLink variant="light" to="/signup" style={{textDecoration: 'none',}} >
+            <Button variant="light" className="mx-2" style={{ backgroundColor: '#ffffff', color: 'black' }}>Sign Up</Button>
+            </NavLink>
+          {/* <Button variant="outline-light" className="mx-2"><Link to="/login">Login</Link></Button>
+          <Button variant="light" className="mx-2" style={{ backgroundColor: '#ffffff', color: 'black' }}><Link to="/signup">Sign Up</Link> Up</Button> */}
+
+        </div>
+      </Navbar>
+    </Headroom>
         <Container fluid className="flex-grow-1 d-flex px-4 align-items-center justify-content-center text-white">
           <Row className="justify-content-center align-items-center">
             <Col lg={5} md={6} className="text-center text-lg-start">
@@ -19,8 +53,12 @@ const Home = () => {
               <p className="lead fw-normal mb-4">
                 Future of Landed Property Investments with Cutting-Edge AI Insights
               </p>
-              <Button variant="primary" size="lg" className="me-2" >SIGN UP</Button>
-              <Button variant="light" className="mx-2 sign-up-button"size="lg">Login</Button>
+              <Link variant="light" to="/signup" style={{textDecoration: 'none',}} >
+                <Button variant="primary" size="lg" className="me-2" >SIGN UP</Button>
+                </Link>
+                <Link variant="light" to="/signup" style={{textDecoration: 'none',}} >
+                  <Button variant="light" className="mx-2 sign-up-button"size="lg">Login</Button>
+                </Link>
             </Col>
             <Col xs={9} md={5} className="text-center">
               <img src={investImage} alt="Invest" className="img-fluid" />
@@ -44,12 +82,13 @@ const Home = () => {
               </p>
             </Col>
             <Col md={6} className="text-md-right"> {/* This aligns the column content to the right on medium devices and up */}
-              <img src={villaImage} alt="Villa" className="img-fluid" style={{ maxHeight: '300px' }} /> {/* You can adjust maxHeight as needed */}
+              <img src={villaImage2} alt="Villa" className="img-fluid" style={{ maxHeight: '300px' }} /> {/* You can adjust maxHeight as needed */}
             </Col>
           </Row>
         </Container>
         </section>
         <section id="contact-section">
+          <div className='pt-5'></div>
           <div className='pt-5'></div>
           <Container className="pt-3">
         <Row className="justify-content-center">

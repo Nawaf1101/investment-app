@@ -12,7 +12,7 @@ const Footer = () => {
       <Container>
         <Row className="justify-content-center">
             <Col xs={12} md={4} className="text-center">
-                <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" style={{ fontSize: '2rem' }}>
+                <a href="https://www.linkedin.com/company/villacapitalsa/" target="_blank" rel="noopener noreferrer" style={{ fontSize: '2rem' }}>
                     <FaLinkedin />
                 </a>
                 {' '} {/* This adds space between icons */}
@@ -21,6 +21,7 @@ const Footer = () => {
                 </a>
             </Col>
         </Row>
+        <h6 className="text-center" style={{padding:"6px"}}>© VILLA TEAM </h6>
       </Container>
     </footer>
   );
