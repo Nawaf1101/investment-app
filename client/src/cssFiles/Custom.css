@@ -1,0 +1,153 @@
+.custom-nav-link {
+  position: relative;
+  overflow: hidden; /* Ensures the pseudo-element is contained within the nav-link's bounds */
+}
+
+.custom-nav-link::after {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 80%; /* Ensures the pseudo-element spans the full width */
+  height: 2px;
+  bottom: 0;
+  left: 50%; /* Centers the pseudo-element */
+  background-color: #fff; /* Change color as needed */
+  transition: transform 0.25s ease-in-out;
+  transform: translateX(-50%) scaleX(0); /* Initialize centered but with no width */
+  transform-origin: center bottom; /* Ensures the scaling is from the center */
+  z-index: 1; /* Ensure it's above the text */
+}
+
+.custom-nav-link:hover::after,
+.custom-nav-link:focus::after {
+  transform: translateX(-50%) scaleX(1); /* Expand the pseudo-element to full width on hover */
+  
+}
+
+
+
+.btn-light {
+  background-color: #6cb1cc !important;
+  border-color: #6cb1cc !important;
+}
+.btn-light:hover {
+  background-color: #458DA9 !important;
+  border-color: #458DA9 !important;
+  color: white !important;
+}
+
+.pg-primary {
+  background: linear-gradient(to bottom, #458DA9 21%, #5FA09D 70%) !important;
+}
+.nav-bg {
+  background-color: #458DA9 !important;
+  padding-left: 2rem !important;
+  padding-right: 1rem !important;
+  transition: all 0.5s ease-in-out; /* Apply transition to all properties */
+}
+
+.headroom--pinned .nav-bg {
+  background: linear-gradient(to bottom, #458DA9 21%, #5FA09D 70%) !important;
+  border-bottom-left-radius: 70px !important;
+  border-bottom-right-radius: 70px !important;
+  padding-left: 3rem !important;
+  padding-right: 2rem !important;
+}
+
+.headroom--unpinned {
+  top: -110px !important; /* Adjust this value to the height of your header */
+  
+}
+
+
+.btn-primary {
+  background-color: #67b3be !important;
+  border-color: #489FAC !important;
+}
+
+.btn-primary:hover {
+  background-color: #317F8B !important;
+  border-color: #317F8B !important;
+}
+
+
+
+
+.pg-body{
+  background-color: #fff !important;
+}
+
+.opportunity-card {
+  max-width: 350px !important;
+  height: 530px !important;
+  border-radius: 20px; /* Rounded corners */
+  overflow: hidden; /* Clip the contents to the border radius */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+
+.opportunity-card .card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Distributes space evenly */
+  padding: 1rem;
+  overflow: hidden; /* Prevents content from overflowing */
+}
+
+
+.card-img-top {
+  height: 200px; /* Adjust this value to fit your design */
+  object-fit: cover; /* Ensures the image covers the area without stretching */
+}
+
+.progress-custom {
+  position: relative;
+  height: 20px; /* Example height, adjust as needed */
+  background-color: #ffffff; /* White background for the unfilled part */
+  border: 0.1pt solid #000; /* Black border */
+}
+
+
+.card-title {
+  max-height: 3rem; /* Adjust the value as needed */
+  overflow: hidden; /* Hide overflowing text */
+  text-overflow: ellipsis; /* Add ellipsis (...) for truncated text */
+}
+
+
+.progress-custom .progress-bar {
+  background-color: #3e8a96 !important; /* Custom progress color */
+  display: flex;
+  align-items: center; /* Vertically center the content of the progress bar */
+  justify-content: center; /* Horizontally center the content of the progress bar */
+  height: 100%; /* Full height of the parent */
+}
+.progress-custom .progress-bar span {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  z-index: 1;
+  color: black !important;
+}
+
+
+.progress-text {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  color: black;
+  font-weight: bold;
+
+}
+
+
+.card-title, .card-text {
+  /* Remove fixed height and use min-height instead */
+  min-height: 2.5rem; /* Adjust this value as needed */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.footer-bg{
+  background: linear-gradient(to bottom, #5FA09D 21%, #458DA9 70%) !important;
+}
