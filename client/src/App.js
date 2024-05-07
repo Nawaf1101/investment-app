@@ -1,55 +1,37 @@
-import React, { useState } from 'react'
-import axios from 'axios';
-import Home from './pages/Home';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import Signup from './pages/Signup';
-import Login from './pages/Login';
-const App = () => {
+import React, { useState, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+} from "react-router-dom";
+import Home from "./pages/Home";
+import Signup from "./pages/Signup";
+import Login from "./pages/Login";
+import EditProfile from "./pages/EditProfile";
+import { toast, ToastContainer } from "react-toastify";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import "react-toastify/dist/ReactToastify.css";
+import Contact from "./pages/Contact";
+import About from "./pages/About";
+import OpportunityDetail from "./pages/OpportunityDetail";
 
-  const [accounts,setAccounts] = useState([])
-  const [newAccount, setNewAccount] =useState({name:'',email:'',password:''})
-
-  const onSignup = (name, email, password) => {
-    fetch('http://localhost:3001/accounts', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, password }) // Directly using the arguments
-    })
-    .then(response => {
-      if (!response.ok) {
-        if (response.status === 409) {
-          throw new Error('Email already exists');
-        }
-      }
-      return response.json();
-    })
-    .then(data => {
-      toast.success("Account created successfully!");
-      console.log('Success:', data); // Log the response data
-      // Here you might want to update your 'accounts' state or perform other actions
-    })
-    .catch(error => {
-      toast.error(error.message);
-    });
-  };
-
-
+function App() {
   return (
     <div>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Home/>}/>
-          <Route path="/signup" element={<Signup onSignup={onSignup}/>}/>
-          <Route path="/login" element={<Login/>}/>
-        </Routes>
-      </Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/EditProfile" element={<EditProfile />} />
+        <Route path="/Contact" element={<Contact />} />
+        <Route path="/About" element={<About />} />
+        <Route path="/opportunity/:id" element={<OpportunityDetail />} />
+      </Routes>
       <ToastContainer />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

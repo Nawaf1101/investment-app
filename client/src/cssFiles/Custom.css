@@ -4,7 +4,7 @@
 }
 
 .custom-nav-link::after {
-  content: '';
+  content: "";
   display: block;
   position: absolute;
   width: 80%; /* Ensures the pseudo-element spans the full width */
@@ -21,33 +21,30 @@
 .custom-nav-link:hover::after,
 .custom-nav-link:focus::after {
   transform: translateX(-50%) scaleX(1); /* Expand the pseudo-element to full width on hover */
-  
 }
-
-
 
 .btn-light {
   background-color: #6cb1cc !important;
   border-color: #6cb1cc !important;
 }
 .btn-light:hover {
-  background-color: #458DA9 !important;
-  border-color: #458DA9 !important;
+  background-color: #458da9 !important;
+  border-color: #458da9 !important;
   color: white !important;
 }
 
 .pg-primary {
-  background: linear-gradient(to bottom, #458DA9 21%, #5FA09D 70%) !important;
+  background: linear-gradient(to bottom, #458da9 21%, #5fa09d 70%) !important;
 }
 .nav-bg {
-  background-color: #458DA9 !important;
+  background-color: #458da9 !important;
   padding-left: 2rem !important;
   padding-right: 1rem !important;
-  transition: all 0.5s ease-in-out; /* Apply transition to all properties */
+  transition: all 0.3s ease-in-out; /* Apply transition to all properties */
 }
 
 .headroom--pinned .nav-bg {
-  background: linear-gradient(to bottom, #458DA9 21%, #5FA09D 70%) !important;
+  background-color: #5ba09c !important;
   border-bottom-left-radius: 70px !important;
   border-bottom-right-radius: 70px !important;
   padding-left: 3rem !important;
@@ -56,24 +53,27 @@
 
 .headroom--unpinned {
   top: -110px !important; /* Adjust this value to the height of your header */
-  
 }
-
 
 .btn-primary {
   background-color: #67b3be !important;
-  border-color: #489FAC !important;
+  border-color: #489fac !important;
 }
 
 .btn-primary:hover {
-  background-color: #317F8B !important;
-  border-color: #317F8B !important;
+  background-color: #317f8b !important;
+  border-color: #317f8b !important;
 }
 
+.btn-more {
+  background-color: #458da9 !important;
+}
 
+.btn-more:hover {
+  background-color: #306377 !important;
+}
 
-
-.pg-body{
+.pg-body {
   background-color: #fff !important;
 }
 
@@ -85,7 +85,6 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
-
 .opportunity-card .card-body {
   display: flex;
   flex-direction: column;
@@ -94,7 +93,6 @@
   overflow: hidden; /* Prevents content from overflowing */
 }
 
-
 .card-img-top {
   height: 200px; /* Adjust this value to fit your design */
   object-fit: cover; /* Ensures the image covers the area without stretching */
@@ -102,18 +100,15 @@
 
 .progress-custom {
   position: relative;
-  height: 20px; /* Example height, adjust as needed */
-  background-color: #ffffff; /* White background for the unfilled part */
-  border: 0.1pt solid #000; /* Black border */
+  width: 100%;
+  height: 20px; /* Match your progress bar height */
 }
-
 
 .card-title {
   max-height: 3rem; /* Adjust the value as needed */
   overflow: hidden; /* Hide overflowing text */
   text-overflow: ellipsis; /* Add ellipsis (...) for truncated text */
 }
-
 
 .progress-custom .progress-bar {
   background-color: #3e8a96 !important; /* Custom progress color */
@@ -130,24 +125,68 @@
   color: black !important;
 }
 
-
 .progress-text {
   position: absolute;
   width: 100%;
   text-align: center;
+  top: 0;
+  line-height: 15px; /* Match your progress bar height */
   color: black;
-  font-weight: bold;
-
+  font-weight: 400;
+  font-size: 0.9rem;
 }
 
-
-.card-title, .card-text {
+.card-title,
+.card-text {
   /* Remove fixed height and use min-height instead */
-  min-height: 2.5rem; /* Adjust this value as needed */
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.footer-bg{
-  background: linear-gradient(to bottom, #5FA09D 21%, #458DA9 70%) !important;
+.footer-bg {
+  /* background: linear-gradient(to bottom, #5ba09c 21%, #458DA9 70%) !important; */
+  background-color: #458da9 !important;
+}
+
+.custom-nav-dropdown .dropdown-menu {
+  left: 0 !important;
+  right: 0 !important;
+  transform: translateX(-100%);
+}
+
+.text-opportunity {
+  color: #458da9 !important;
+  font-weight: 600 !important;
+}
+.text-opportunity-title {
+  color: #458da9 !important;
+  font-weight: 800 !important;
+}
+.contact-form {
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.contact-form .form-control {
+  border-radius: 20px;
+  border: 1px solid #cccccc;
+}
+
+.contact-form .btn-primary {
+  background-color: #489fac; /* Replace with your button's color */
+  border: none;
+  border-radius: 20px;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+/* Optional: Overriding Bootstrap's primary color for the button's hover state */
+.contact-form .btn-primary:hover {
+  background-color: #317f8b; /* A slightly darker shade for hover effect */
+}
+
+.img-max-height {
+  max-height: 400px; /* Adjust based on your design needs */
+  object-fit: cover; /* Ensures the image covers the area, might clip some parts */
 }

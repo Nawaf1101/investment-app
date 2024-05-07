@@ -1,37 +1,37 @@
-import React from 'react'
+import React from "react";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import { Button, Container, Row, Col, Form } from "react-bootstrap";
 
 const Contact = () => {
   return (
-    <div>
-
-<Container className="pt-3">
+    <div className="d-flex flex-column min-vh-100">
+      <Header />
+      <Container className="flex-grow-1 d-flex align-items-center justify-content-center">
         <Row className="justify-content-center">
-          <Col md={6} className="text-center">
-            <h2>Contact Us</h2>
-            <p className="mb-4">Most calendars are designed for teams. Slate is designed for freelancers</p>
-            <Form className="contact-form p-4 shadow">
-              <Form.Group className="mb-3" controlId="formBasicName">
-                <Form.Control type="text" placeholder="Your Name" />
-              </Form.Group>
+          <h2 style={{ textAlign: "center" }}>Contact Us</h2>
+          <Form className="contact-form p-4 shadow">
+            <Form.Group className="mb-3" controlId="formBasicName">
+              <Form.Control type="text" placeholder="Your Name" />
+            </Form.Group>
 
-              <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Control type="email" placeholder="Your Email" />
-              </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Control type="email" placeholder="Your Email" />
+            </Form.Group>
 
-              <Form.Group className="mb-3" controlId="formBasicMessage">
-                <Form.Control as="textarea" rows={3} placeholder="Your Message" />
-              </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicMessage">
+              <Form.Control as="textarea" rows={3} placeholder="Your Message" />
+            </Form.Group>
 
-              <Button variant="primary" type="submit" className="w-100">
-                Send
-              </Button>
-            </Form>
-          </Col>
+            <Button variant="primary" type="submit" className="w-100">
+              Send
+            </Button>
+          </Form>
         </Row>
-        </Container>
-
+      </Container>
+      <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default Contact
+export default Contact;

@@ -1,22 +1,79 @@
-const express = require('express');
-const cors = require('cors');
-const sqlite3 = require('sqlite3').verbose();
-const bcrypt = require('bcrypt');
+require("dotenv").config();
+const express = require("express");
+const cors = require("cors");
+const sqlite3 = require("sqlite3").verbose();
+const bcrypt = require("bcrypt");
+const session = require("express-session");
+const SQLiteStore = require("connect-sqlite3")(session);
+const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
 
-const PORT = 3001;
 const app = express();
-const db = new sqlite3.Database('./mydb.sqlite3', (err) => {
-    if (err) {
-        console.error(err.message);
-        return;
-    }
-    console.log('Connected to SQLite database.');
+const PORT = process.env.PORT;
+
+const db = new sqlite3.Database(process.env.DATABASE_PATH, (err) => {
+  if (err) {
+    console.error("Error connecting to the database:", err.message);
+    return;
+  }
+  console.log("Connected to the SQLite database.");
 });
 
-app.use(cors());
-app.use(express.json()); // Use Express's built-in JSON parser
+app.use(express.json());
+app.use(
+  cors({
+    origin: ["http://localhost:3000"],
+    methods: ["GET", "POST", "OPTIONS", "PUT"],
+    credentials: true,
+  })
+);
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(
+  session({
+    store: new SQLiteStore({
+      db: "sessions.db", // Ensures that session data is stored in the sessions.db file
+      dir: "./", // Directory where the sessions.db file will be stored
+    }),
+    secret: "Secret",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      expires: new Date(Date.now() + 86400000), // 24 hours
+      secure: false, // Should be set to true in production if using HTTPS
+    },
+  })
+);
 
-// Create table if it doesn't exist
+app.get("/getSession", (req, res) => {
+  if (req.session.user) {
+    return res.json({
+      valid: true,
+      name: req.session.user.name,
+      email: req.session.user.email,
+    });
+  } else {
+    return res.json({ valid: false });
+  }
+});
+
+const dbGet = (sql, params) =>
+  new Promise((resolve, reject) => {
+    db.get(sql, params, (err, result) => {
+      if (err) reject(err);
+      else resolve(result);
+    });
+  });
+
+const dbRun = (sql, params) =>
+  new Promise((resolve, reject) => {
+    db.run(sql, params, function (err) {
+      if (err) reject(err);
+      else resolve(this.lastID);
+    });
+  });
+
 db.run(`CREATE TABLE IF NOT EXISTS accounts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
@@ -24,69 +81,160 @@ db.run(`CREATE TABLE IF NOT EXISTS accounts (
     password TEXT NOT NULL
 )`);
 
-// Endpoint to get accounts
-app.get('/accounts', (req, res) => {
-    db.all("SELECT * FROM accounts", [], (err, rows) => {
-        if (err) {
-            console.error(err.message);
-            res.status(500).send('Error retrieving data from database');
-            return;
-        }
-        res.json(rows);
-    });
+app.post("/accounts", async (req, res) => {
+  const { name, email, password } = req.body;
+  try {
+    const row = await dbGet("SELECT name FROM accounts WHERE email = ?", [
+      email,
+    ]);
+    if (row) return res.status(409).send("Email already exists.");
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const lastID = await dbRun(
+      "INSERT INTO accounts (name, email, password) VALUES (?, ?, ?)",
+      [name, email, hashedPassword]
+    );
+    req.session.user = { name: name, email: email };
+    res.status(201).send({ id: lastID });
+  } catch (err) {
+    console.error("Error during database operation:", err.message);
+    res.status(500).send("An error occurred while processing your request.");
+  }
 });
 
-const hashPassword = (password) => {
-    if (typeof password !== 'string' || password.trim() === '') {
-        console.error('Invalid password provided for hashing');
-        return null;
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    // Retrieve user from the database
+    const user = await dbGet("SELECT * FROM accounts WHERE email = ?", [email]);
+    if (!user) {
+      return res.status(401).send("User not found");
     }
-    const saltRounds = 10; // Number of salt rounds
-    return bcrypt.hashSync(password, saltRounds);
-}
 
-// Endpoint to add an account
-app.post('/accounts', (req, res) => {
-    const { name, email, password } = req.body;
+    // Compare hashed passwords
+    const isValid = await bcrypt.compare(password, user.password);
+    if (!isValid) {
+      return res.status(403).send("Invalid credentials");
+    }
 
-    db.get("SELECT email FROM accounts WHERE email = ?", [email], (err, row) => {
-        if (err) {
-            console.error(err.message);
-            res.status(500).send("An error occurred while checking the email.");
-            return;
-        }
-        
-        if (row) {
-            res.status(409).send("Email already exists."); // 409 Conflict might be appropriate
-            return;
-        }
-        
-        // If no existing email is found, proceed to hash the password and create the account
-        if (!password || typeof password !== 'string') {
-            res.status(400).send('Invalid password provided');
-            return;
-        }
-
-        const hashedPassword = hashPassword(password);
-        if (!hashedPassword) {
-            res.status(500).send('Error hashing password');
-            return;
-        }
-
-        // Insert the new account into the database
-        db.run(`INSERT INTO accounts (name, email, password) VALUES (?, ?, ?)`, [name, email, hashedPassword], function(err) {
-            if (err) {
-                console.error(err.message);
-                res.status(500).send('Failed to create account');
-                return;
-            }
-            res.status(201).send({ id: this.lastID });
-        });
-    });
+    req.session.user = { email: user.email, name: user.name };
+    res.status(200).send("Login successful");
+  } catch (err) {
+    console.error("Login error:", err.message);
+    res.status(500).send("An internal server error occurred");
+  }
 });
 
+app.post("/logout", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error("Logout error:", err);
+      return res.status(500).send("Logout failed due to server error.");
+    }
+    // Optionally clear the client-side cookie if set
+    res.clearCookie("connect.sid"); // 'connect.sid' is the default session cookie name; adjust if different
+    res.send("Logged out successfully");
+  });
+});
 
-// Start the server
+app.put("/updateAccount", async (req, res) => {
+  const { name, email, newEmail, password, newPassword } = req.body;
+
+  // Check for valid session
+  if (!req.session.user) {
+    return res
+      .status(403)
+      .json({ message: "No session found or unauthorized." });
+  }
+
+  const currentUserEmail = req.session.user.email;
+
+  // Authorization check
+  if (email !== currentUserEmail) {
+    return res
+      .status(403)
+      .json({ message: "Unauthorized to update this account." });
+  }
+
+  try {
+    let updates = {};
+    let values = [];
+
+    // Handle email update
+    if (newEmail && newEmail !== currentUserEmail) {
+      const emailExists = await dbGet(
+        "SELECT email FROM accounts WHERE email = ?",
+        [newEmail]
+      );
+      if (emailExists) {
+        return res.status(409).json({ message: "Email already in use." });
+      }
+      updates.email = newEmail;
+      values.push(newEmail);
+    }
+
+    // Verify and update password
+    if (newPassword && password) {
+      const user = await dbGet(
+        "SELECT password FROM accounts WHERE email = ?",
+        [currentUserEmail]
+      );
+      const isValid = await bcrypt.compare(password, user.password);
+      if (!isValid) {
+        return res
+          .status(403)
+          .json({ message: "Current password is incorrect." });
+      }
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      updates.password = hashedPassword;
+      values.push(hashedPassword);
+    }
+
+    // Update name if provided
+    if (name) {
+      updates.name = name;
+      values.push(name);
+    }
+
+    // Build and execute SQL update statement
+    if (Object.keys(updates).length > 0) {
+      const setParts = Object.keys(updates)
+        .map((key) => `${key} = ?`)
+        .join(", ");
+      const sql = `UPDATE accounts SET ${setParts} WHERE email = ?`;
+      values.push(currentUserEmail); // This should be the last value pushed for the WHERE clause
+
+      console.log("Executing SQL:", sql); // Debugging log
+      console.log("With values:", values); // Debugging log
+
+      await dbRun(sql, values)
+        .then(() => {
+          console.log("Update successful for user:", currentUserEmail);
+          // Update session if email or name was changed
+          if (updates.email) {
+            req.session.user.email = updates.email;
+          }
+          if (updates.name) {
+            req.session.user.name = updates.name;
+          }
+          res.json({ message: "Account updated successfully." });
+        })
+        .catch((err) => {
+          console.error("Failed to update user:", err);
+          throw err; // Rethrow to handle in outer catch
+        });
+    } else {
+      console.log("No updates to perform for user:", currentUserEmail);
+      res.status(400).json({ message: "No update data provided." });
+    }
+  } catch (err) {
+    console.error("Error updating account:", err.message);
+    res
+      .status(500)
+      .json({ message: "Failed to update account due to server error." });
+  }
+});
+
 app.listen(PORT, () => {
-    console.log(`Server listening on port ${PORT}`);
+  console.log(`Server listening on port ${PORT}`);
 });

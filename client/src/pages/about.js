@@ -1,29 +1,42 @@
-import React from 'react'
+import React from "react";
+import { Container, Row, Col } from "react-bootstrap";
+import villaImage from "../images/Villa.png";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 const about = () => {
   return (
-    <div>
-      <Container className="py-5">
-          <Row className="justify-content-center">
-            <h1 className="display-3 fw-bold" style={{ color: '#4C95A0' }}>Villa Investments</h1>
-          </Row>
-        </Container>
-        <Container className="pt-5"> {/* This adds padding to the top of the container */}
-          <Row className="align-items-center"> {/* This centers the content vertically */}
-            <Col md={6}>
-              <h6 className="display-5 fw-bold" style={{ color: '#68B0BB' }}>Who we are?</h6>
-              <p className="text-start lead fw-normal mb-4">
-                At Villa Capital, we specialize in diversifying investment opportunities within the real estate sector.
-              </p>
-            </Col>
-            <Col md={6} className="text-md-right"> {/* This aligns the column content to the right on medium devices and up */}
-              <img src={villaImage} alt="Villa" className="img-fluid" style={{ maxHeight: '300px' }} /> {/* You can adjust maxHeight as needed */}
-            </Col>
-          </Row>
-        </Container>
-
+    <div className="d-flex flex-column min-vh-100">
+      {" "}
+      {/* Flex container for page content */}
+      <Header />
+      <Container
+        fluid
+        className="flex-grow-1 d-flex align-items-center justify-content-center"
+      >
+        <Row className="align-items-center text-center">
+          <Col md={6}>
+            <h1 className="display-3 fw-bold" style={{ color: "#4C95A0" }}>
+              Villa Investments
+            </h1>
+            <p className="lead fw-normal mb-4">
+              At Villa Capital, we specialize in diversifying investment
+              opportunities within the real estate sector.
+            </p>
+          </Col>
+          <Col md={6}>
+            <img
+              src={villaImage}
+              alt="Villa"
+              className="img-fluid"
+              style={{ maxHeight: "450px" }}
+            />
+          </Col>
+        </Row>
+      </Container>
+      <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default about
+export default about;
