@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import "../cssFiles/Custom.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import opportunities from "../data/InvestmentData";
+import CustomButton from "./CustomButton";
 
 const calculateProgress = (totalValue, remainingValue) => {
   const fundedValue = totalValue - remainingValue;
@@ -74,13 +75,12 @@ const OpprtunityCard = () => {
                   <strong>Potential return: </strong>$
                   {opportunity.potentialReturn.toLocaleString()}
                 </Card.Text>
-                <Button
-                  as={Link}
+                <CustomButton
                   to={`/opportunity/${opportunity.id}`}
                   className="mt-auto btn-more"
                 >
                   More information
-                </Button>
+                </CustomButton>
               </Card.Body>
             </Card>
           </Col>
