@@ -18,8 +18,9 @@ const calculateProgress = (totalValue, remainingValue) => {
 };
 
 const OpportunityDetail = () => {
-  const { id } = useParams();
-  const opportunity = opportunities.find((opp) => opp.id === parseInt(id));
+  const { id } = useParams<{ id: string }>();
+  const opportunityId = id ? parseInt(id, 10) : null;
+  const opportunity = opportunities.find((opp) => opp.id === opportunityId);
 
   if (!opportunity) {
     return (
@@ -29,7 +30,7 @@ const OpportunityDetail = () => {
           <Row>
             <Col>
               <h2>Opportunity not found</h2>
-              <Button as={Link} to="/" variant="primary">
+              <Button as={Link as any} to="/" variant="primary">
                 Go back
               </Button>
             </Col>
@@ -77,7 +78,7 @@ const OpportunityDetail = () => {
             <p className="fs-6 mb-4">{opportunity.lowestInvestment}$</p>
             <Row className="mt-3">
               <Col className="d-flex justify-content-center">
-                <Button as={Link} to="/" className="btn-md btn-more">
+                <Button as={Link as any} to="/" className="btn-md btn-more">
                   Go back
                 </Button>
               </Col>

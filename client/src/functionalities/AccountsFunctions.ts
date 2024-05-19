@@ -22,7 +22,11 @@ const schema = Joi.object({
   }),
 });
 
-export function validate(email, password, name = "anonymous") {
+export function validate(
+  email: string,
+  password: string,
+  name: string = "anonymous"
+) {
   const options = { abortEarly: false }; // Include all errors, not just the first
   const { error } = schema.validate({ name, email, password }, options);
   if (!error) return null;
@@ -34,7 +38,7 @@ export function validate(email, password, name = "anonymous") {
   return validationErrors;
 }
 
-export async function onSignup(name, email, password) {
+export async function onSignup(name: string, email: string, password: string) {
   try {
     const response = await fetch("http://localhost:3001/accounts", {
       method: "POST",
@@ -58,7 +62,7 @@ export async function onSignup(name, email, password) {
   }
 }
 
-export async function onLogin(email, password) {
+export async function onLogin(email: string, password: string) {
   try {
     const response = await fetch("http://localhost:3001/login", {
       method: "POST",
@@ -102,7 +106,12 @@ export async function onLogOut() {
   }
 }
 
-export async function onEdit(name, currentEmail, newEmail, newPassword) {
+export async function onEdit(
+  name: string,
+  currentEmail: string,
+  newEmail: string,
+  newPassword: string
+) {
   const requestBody = {
     name: name,
     email: currentEmail,

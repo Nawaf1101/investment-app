@@ -71,7 +71,7 @@ const Header = () => {
         </Navbar.Collapse>
         <div className="ms-auto">
           {isLoggedIn ? (
-            <Dropdown alignRight className="custom-nav-dropdown">
+            <Dropdown align="start" className="custom-nav-dropdown">
               <Dropdown.Toggle
                 variant="light"
                 id="dropdown-basic"

@@ -1,26 +1,33 @@
 import React, { useState } from "react";
-import { Button, Container, Form } from "react-bootstrap";
+import { Button, Container, Row, Col, Form } from "react-bootstrap";
 import Joi from "joi";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import { onLogin, validate } from "../functionalities/AccountsFunctions";
+import { onSignup, validate } from "../functionalities/AccountsFunctions";
+interface ValidationErrors {
+  email?: string;
+  password?: string;
+  name?: string;
+}
 
-const Login = () => {
+const Signup = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState({});
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [name, setName] = useState<string>("");
+  const [errors, setErrors] = useState<ValidationErrors>({});
 
-  const onSubmit = async (event) => {
-    event.preventDefault();
-    const validationErrors = validate(email, password);
-    setErrors(validationErrors || {});
-    if (validationErrors) return; // Prevent form submission if there are validation errors
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    const ValidationErrors = validate(email, password);
+    setErrors(ValidationErrors || {});
+    if (ValidationErrors) return;
 
-    if (await onLogin(email, password)) {
+    if (await onSignup(name, email, password)) {
       navigate("/");
-    } // Proceed with the login if no errors
+    }
   };
 
   return (
@@ -38,6 +45,21 @@ const Login = () => {
           }}
         >
           <Form onSubmit={onSubmit}>
+            <Form.Group className="mb-3" controlId="formGroupName">
+              <Form.Label>Your name</Form.Label>
+              <Form.Control
+                type="text"
+                name="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                isInvalid={!!errors.name}
+                placeholder="ex: Nawaf Saleh"
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors.name}
+              </Form.Control.Feedback>
+            </Form.Group>
+
             <Form.Group className="mb-3" controlId="formGroupEmail">
               <Form.Label>Your email</Form.Label>
               <Form.Control
@@ -78,16 +100,16 @@ const Login = () => {
                 borderRadius: "20px",
               }}
             >
-              Login
+              Sign Up
             </Button>
           </Form>
           <div style={{ textAlign: "center", marginTop: "2rem" }}>
-            <p style={{ marginBottom: "0" }}>Don't have an account?</p>
+            <p style={{ marginBottom: "0" }}>Have an account?</p>
             <a
-              href="/signup"
+              href="/login"
               style={{ textDecoration: "none", color: "#378C99" }}
             >
-              Join us!
+              Login!
             </a>
           </div>
         </Container>
@@ -97,4 +119,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;
