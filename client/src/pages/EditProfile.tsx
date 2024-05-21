@@ -1,46 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { Button, Container, Row, Col, Form } from "react-bootstrap";
 import { toast, ToastContainer } from "react-toastify";
 import { onEdit } from "../functionalities/AccountsFunctions";
 
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+import useAccount from "../hooks/useAccount";
 const EditProfile = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [user, setUser] = useState({ name: "", email: "" });
+  const { user, isLoggedIn } = useAccount();
 
-  useEffect(() => {
-    fetch("http://localhost:3001/getSession", {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((res) => {
-        if (res.ok) {
-          // Check if the response status is 2xx
-          return res.json(); // Parse JSON data from the response
-        } else {
-          throw new Error("Network response was not ok.");
-        }
-      })
-      .then((data) => {
-        if (data.valid) {
-          setUser({ name: data.name, email: data.email });
-          setEmail(data.email);
-          setName(data.name);
-        } else {
-          toast.error("No active session found");
-          navigate("/");
-        }
-      })
-      .catch((err) => {
-        console.error("Error fetching data:", err); // Log errors to the console
-      });
-  }, []);
-
+  if (!isLoggedIn) {
+    return <Navigate to="/login" />;
+  }
   const onSubmit = async (e) => {
     e.preventDefault();
     if (name === user.name && email === user.email && !password) {

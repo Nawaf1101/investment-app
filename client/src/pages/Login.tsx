@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import { onLogin, validate } from "../functionalities/AccountsFunctions";
+import useAccount from "../hooks/useAccount";
 
 interface ValidationErrors {
   email?: string;
@@ -15,17 +16,19 @@ const Login = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [errors, setErrors] = useState<ValidationErrors>({});
-
+  const { handleLogIn, isLoggedIn } = useAccount();
   const onSubmit = async (event) => {
     event.preventDefault();
     const ValidationErrors = validate(email, password);
     setErrors(ValidationErrors || {});
     if (ValidationErrors) return;
-
-    if (await onLogin(email, password)) {
-      navigate("/");
-    } // Proceed with the login if no errors
+    handleLogIn(email, password);
   };
+
+  if (isLoggedIn) {
+    navigate("/");
+    return;
+  }
 
   return (
     <>

@@ -5,42 +5,10 @@ import { NavLink } from "react-router-dom";
 import Headroom from "react-headroom";
 import "../cssFiles/Custom.css";
 import { onLogOut } from "../functionalities/AccountsFunctions";
+import useAccount from "../hooks/useAccount";
 
 const Header = () => {
-  const [isLoggedIn, setLoggedInOut] = useState(false);
-  const [user, setUser] = useState({ name: "", email: "" });
-  useEffect(() => {
-    fetch("http://localhost:3001/getSession", {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((res) => {
-        if (res.ok) {
-          // Check if the response status is 2xx
-          return res.json();
-        } else {
-          throw new Error("Network response was not ok.");
-        }
-      })
-      .then((data) => {
-        if (data.valid) {
-          setUser({ name: data.name, email: data.email });
-          setLoggedInOut(true);
-        } else {
-          console.log("No active session found.");
-        }
-      })
-      .catch((err) => {
-        console.error("Error fetching data:", err); // Log errors to the console
-      });
-  }, []);
-
-  const handleLogOut = async (event) => {
-    if (await onLogOut()) {
-      setLoggedInOut(false);
-    }
-  };
-
+  const { isLoggedIn, user, handleLogOut } = useAccount();
   return (
     <Headroom>
       <Navbar variant="dark" expand="lg" className="nav-bg">

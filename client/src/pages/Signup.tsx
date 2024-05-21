@@ -6,28 +6,28 @@ import { toast, ToastContainer } from "react-toastify";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import { onSignup, validate } from "../functionalities/AccountsFunctions";
+import useAccount from "../hooks/useAccount";
+
 interface ValidationErrors {
   email?: string;
   password?: string;
   name?: string;
 }
-
 const Signup = () => {
-  const navigate = useNavigate();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [errors, setErrors] = useState<ValidationErrors>({});
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
+  const { handleSignUp } = useAccount();
+
+  const onSubmit = (event) => {
+    event.preventDefault();
     const ValidationErrors = validate(email, password);
     setErrors(ValidationErrors || {});
     if (ValidationErrors) return;
 
-    if (await onSignup(name, email, password)) {
-      navigate("/");
-    }
+    handleSignUp(name, email, password);
   };
 
   return (
