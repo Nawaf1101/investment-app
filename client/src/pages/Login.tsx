@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { Button, Container, Form } from "react-bootstrap";
-import Joi from "joi";
 import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import { onLogin, validate } from "../functionalities/AccountsFunctions";
+import { validate } from "../functionalities/AccountsFunctions";
 import useAccount from "../hooks/useAccount";
 
 interface ValidationErrors {

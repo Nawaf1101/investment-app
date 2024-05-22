@@ -1,16 +1,12 @@
-import { useEffect, useState } from "react";
-import {
-  onLogOut,
-  validate,
-  onSignup,
-  onLogin,
-} from "../functionalities/AccountsFunctions";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import useAuthStore from "../store/useAccountStore";
+import { LoginData, SignupData, useAPI } from "../apis/useAPI";
+import { onLogOut } from "../functionalities/AccountsFunctions";
 const useAccount = () => {
   const navigate = useNavigate();
-  const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
-  const [user, setUser] = useState({ name: "", email: "" });
+  const { isLoggedIn, user, setLogin, setLogout, setUser } = useAuthStore();
+  const { testonLogin, onSignup } = useAPI();
 
   useEffect(() => {
     fetch("http://localhost:3001/getSession", {
@@ -27,8 +23,8 @@ const useAccount = () => {
       })
       .then((data) => {
         if (data.valid) {
-          setUser({ name: data.name, email: data.email });
-          setLoggedIn(true);
+          setUser(data.name, data.email);
+          setLogin();
         } else {
           console.log("No active session found.");
         }
@@ -36,11 +32,12 @@ const useAccount = () => {
       .catch((err) => {
         console.error("Error fetching data:", err); // Log errors to the console
       });
-  }, [isLoggedIn]);
+  }, [isLoggedIn, setUser, setLogin]);
 
   const handleLogOut = async (event) => {
-    if (await onLogOut()) {
-      setLoggedIn(false);
+    let isLoggedOut = await onLogOut();
+    if (isLoggedOut) {
+      setLogout();
     }
   };
 
@@ -49,19 +46,26 @@ const useAccount = () => {
     email: string,
     password: string
   ) => {
-    let isAccountCreated = await onSignup(name, email, password);
-    if (isAccountCreated) {
-      setLoggedIn(true);
-      navigate("/");
-    }
+    try {
+      const signupData: SignupData = { email, name, password };
+      let isAccountCreated = await onSignup(signupData);
+      if (isAccountCreated) {
+        setLogin();
+        navigate("/");
+      }
+    } catch (error: any) {}
   };
 
   const handleLogIn = async (email: string, password: string) => {
-    let isLoginSuccessfully: boolean = await onLogin(email, password);
-    if (isLoginSuccessfully) {
-      setLoggedIn(true);
-      navigate("/");
-    }
+    const loginData: LoginData = { email, password };
+    try {
+      let status = await testonLogin(loginData);
+
+      if (status) {
+        setLogin();
+        navigate("/");
+      }
+    } catch (error: any) {}
   };
 
   return {
@@ -69,7 +73,6 @@ const useAccount = () => {
     user,
     setUser,
     isLoggedIn,
-    setLoggedIn,
     handleSignUp,
     handleLogIn,
   };

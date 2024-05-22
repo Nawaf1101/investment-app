@@ -1,5 +1,7 @@
 import { toast } from "react-toastify";
 import Joi from "joi";
+import { useAPI, LoginData } from "../apis/useAPI";
+import { useState } from "react";
 
 const schema = Joi.object({
   name: Joi.string().min(3).required().messages({
@@ -38,55 +40,29 @@ export function validate(
   return validationErrors;
 }
 
-export async function onSignup(name: string, email: string, password: string) {
-  try {
-    const response = await fetch("http://localhost:3001/accounts", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify({ name, email, password }),
-    });
-    if (!response.ok) {
-      if (response.status === 409) {
-        throw new Error("Email already exists");
-      } else {
-        throw new Error("Something went wrong");
-      }
-    }
-    await response.json();
-    toast.success("Account created successfully!");
-    return true;
-  } catch (error) {
-    toast.error(error.message);
-    return false;
-  }
-}
-
-export async function onLogin(email: string, password: string) {
-  try {
-    const response = await fetch("http://localhost:3001/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify({ email, password }),
-    });
-    if (!response.ok) {
-      if (response.status === 403) {
-        throw new Error("Invalid credentials");
-      } else if (response.status === 401) {
-        throw new Error("User not found");
-      } else {
-        throw new Error("Something went wrong");
-      }
-    }
-    await response.text();
-    toast.success("Login successful!");
-    return true;
-  } catch (error) {
-    toast.error(error.message);
-    return false;
-  }
-}
+// export async function onSignup(name: string, email: string, password: string) {
+//   try {
+//     const response = await fetch("http://localhost:3001/accounts", {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       credentials: "include",
+//       body: JSON.stringify({ name, email, password }),
+//     });
+//     if (!response.ok) {
+//       if (response.status === 409) {
+//         throw new Error("Email already exists");
+//       } else {
+//         throw new Error("Something went wrong");
+//       }
+//     }
+//     await response.json();
+//     toast.success("Account created successfully!");
+//     return true;
+//   } catch (error) {
+//     toast.error(error.message);
+//     return false;
+//   }
+// }
 
 export async function onLogOut() {
   try {

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import { onSignup, validate } from "../functionalities/AccountsFunctions";
+import { validate } from "../functionalities/AccountsFunctions";
 import useAccount from "../hooks/useAccount";
 
 interface ValidationErrors {
