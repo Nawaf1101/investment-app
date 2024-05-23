@@ -32,8 +32,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   session({
     store: new SQLiteStore({
-      db: "sessions.db", // Ensures that session data is stored in the sessions.db file
-      dir: "./", // Directory where the sessions.db file will be stored
+      db: "sessions.db",
+      dir: "./",
     }),
     secret: "Secret",
     resave: false,
@@ -105,13 +105,11 @@ app.post("/accounts", async (req, res) => {
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try {
-    // Retrieve user from the database
     const user = await dbGet("SELECT * FROM accounts WHERE email = ?", [email]);
     if (!user) {
       return res.status(401).send("User not found");
     }
 
-    // Compare hashed passwords
     const isValid = await bcrypt.compare(password, user.password);
     if (!isValid) {
       return res.status(403).send("Invalid credentials");
@@ -131,8 +129,7 @@ app.post("/logout", (req, res) => {
       console.error("Logout error:", err);
       return res.status(500).send("Logout failed due to server error.");
     }
-    // Optionally clear the client-side cookie if set
-    res.clearCookie("connect.sid"); // 'connect.sid' is the default session cookie name; adjust if different
+    res.clearCookie("connect.sid");
     res.send("Logged out successfully");
   });
 });
@@ -140,7 +137,6 @@ app.post("/logout", (req, res) => {
 app.put("/updateAccount", async (req, res) => {
   const { name, email, newEmail, password, newPassword } = req.body;
 
-  // Check for valid session
   if (!req.session.user) {
     return res
       .status(403)
@@ -149,7 +145,6 @@ app.put("/updateAccount", async (req, res) => {
 
   const currentUserEmail = req.session.user.email;
 
-  // Authorization check
   if (email !== currentUserEmail) {
     return res
       .status(403)
@@ -160,7 +155,6 @@ app.put("/updateAccount", async (req, res) => {
     let updates = {};
     let values = [];
 
-    // Handle email update
     if (newEmail && newEmail !== currentUserEmail) {
       const emailExists = await dbGet(
         "SELECT email FROM accounts WHERE email = ?",
@@ -173,7 +167,6 @@ app.put("/updateAccount", async (req, res) => {
       values.push(newEmail);
     }
 
-    // Verify and update password
     if (newPassword && password) {
       const user = await dbGet(
         "SELECT password FROM accounts WHERE email = ?",
@@ -190,41 +183,27 @@ app.put("/updateAccount", async (req, res) => {
       values.push(hashedPassword);
     }
 
-    // Update name if provided
     if (name) {
       updates.name = name;
       values.push(name);
     }
 
-    // Build and execute SQL update statement
     if (Object.keys(updates).length > 0) {
       const setParts = Object.keys(updates)
         .map((key) => `${key} = ?`)
         .join(", ");
       const sql = `UPDATE accounts SET ${setParts} WHERE email = ?`;
-      values.push(currentUserEmail); // This should be the last value pushed for the WHERE clause
+      values.push(currentUserEmail);
 
-      console.log("Executing SQL:", sql); // Debugging log
-      console.log("With values:", values); // Debugging log
-
-      await dbRun(sql, values)
-        .then(() => {
-          console.log("Update successful for user:", currentUserEmail);
-          // Update session if email or name was changed
-          if (updates.email) {
-            req.session.user.email = updates.email;
-          }
-          if (updates.name) {
-            req.session.user.name = updates.name;
-          }
-          res.json({ message: "Account updated successfully." });
-        })
-        .catch((err) => {
-          console.error("Failed to update user:", err);
-          throw err; // Rethrow to handle in outer catch
-        });
+      await dbRun(sql, values);
+      if (updates.email) {
+        req.session.user.email = updates.email;
+      }
+      if (updates.name) {
+        req.session.user.name = updates.name;
+      }
+      res.json({ message: "Account updated successfully." });
     } else {
-      console.log("No updates to perform for user:", currentUserEmail);
       res.status(400).json({ message: "No update data provided." });
     }
   } catch (err) {

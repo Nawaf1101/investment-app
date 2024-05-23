@@ -1,13 +1,12 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../store/useAccountStore";
-import { LoginData, SignupData, useAPI } from "../apis/useAPI";
-import { onLogOut } from "../functionalities/AccountsFunctions";
-const useAccount = () => {
-  const navigate = useNavigate();
-  const { isLoggedIn, user, setLogin, setLogout, setUser } = useAuthStore();
-  const { testonLogin, onSignup } = useAPI();
+import { LoginData, SignupData, EditData, useAPI } from "../apis/useAPI";
 
+const useAccount = () => {
+  const { isLoggedIn, user, setLogin, setLogout, setUser } = useAuthStore();
+  const { onLogin, onSignup, onLogOut, onEdit } = useAPI();
+  const navigate = useNavigate();
   useEffect(() => {
     fetch("http://localhost:3001/getSession", {
       method: "GET",
@@ -15,9 +14,9 @@ const useAccount = () => {
     })
       .then((res) => {
         if (res.ok) {
-          // Check if the response status is 2xx
           return res.json();
         } else {
+          setLogout();
           throw new Error("Network response was not ok.");
         }
       })
@@ -26,14 +25,15 @@ const useAccount = () => {
           setUser(data.name, data.email);
           setLogin();
         } else {
+          setLogout();
           console.log("No active session found.");
         }
       })
       .catch((err) => {
-        console.error("Error fetching data:", err); // Log errors to the console
+        setLogout();
+        console.error("Error fetching data:", err);
       });
-  }, [isLoggedIn, setUser, setLogin]);
-
+  }, [setUser, setLogin]);
   const handleLogOut = async (event) => {
     let isLoggedOut = await onLogOut();
     if (isLoggedOut) {
@@ -59,8 +59,24 @@ const useAccount = () => {
   const handleLogIn = async (email: string, password: string) => {
     const loginData: LoginData = { email, password };
     try {
-      let status = await testonLogin(loginData);
+      let status = await onLogin(loginData);
 
+      if (status) {
+        setLogin();
+        navigate("/");
+      }
+    } catch (error: any) {}
+  };
+
+  const handelEditProfile = async (
+    name: string,
+    currentEmail: string,
+    newEmail: string,
+    newPassword: string
+  ) => {
+    const editData: EditData = { name, currentEmail, newEmail, newPassword };
+    try {
+      let status = await onEdit(editData);
       if (status) {
         setLogin();
         navigate("/");
@@ -75,6 +91,7 @@ const useAccount = () => {
     isLoggedIn,
     handleSignUp,
     handleLogIn,
+    handelEditProfile,
   };
 };
 

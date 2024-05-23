@@ -4,7 +4,6 @@ import { Button, Navbar, Nav, Dropdown } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import Headroom from "react-headroom";
 import "../cssFiles/Custom.css";
-import { onLogOut } from "../functionalities/AccountsFunctions";
 import useAccount from "../hooks/useAccount";
 
 const Header = () => {

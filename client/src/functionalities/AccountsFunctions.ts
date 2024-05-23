@@ -64,56 +64,56 @@ export function validate(
 //   }
 // }
 
-export async function onLogOut() {
-  try {
-    const response = await fetch("http://localhost:3001/logout", {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-    });
-    if (!response.ok) {
-      throw new Error("Something went wrong");
-    }
-    toast.success("Successfully logged out!");
-    return true;
-  } catch (error) {
-    toast.error(error.message);
-    return false;
-  }
-}
+// export async function onLogOut() {
+//   try {
+//     const response = await fetch("http://localhost:3001/logout", {
+//       method: "POST",
+//       credentials: "include",
+//       headers: { "Content-Type": "application/json" },
+//     });
+//     if (!response.ok) {
+//       throw new Error("Something went wrong");
+//     }
+//     toast.success("Successfully logged out!");
+//     return true;
+//   } catch (error) {
+//     toast.error(error.message);
+//     return false;
+//   }
+// }
 
-export async function onEdit(
-  name: string,
-  currentEmail: string,
-  newEmail: string,
-  newPassword: string
-) {
-  const requestBody = {
-    name: name,
-    email: currentEmail,
-    ...(newEmail && newEmail !== currentEmail && { newEmail: newEmail }),
-    ...(newPassword && { newPassword: newPassword }),
-  };
+// export async function onEdit(
+//   name: string,
+//   currentEmail: string,
+//   newEmail: string,
+//   newPassword: string
+// ) {
+//   const requestBody = {
+//     name: name,
+//     email: currentEmail,
+//     ...(newEmail && newEmail !== currentEmail && { newEmail: newEmail }),
+//     ...(newPassword && { newPassword: newPassword }),
+//   };
 
-  try {
-    const response = await fetch("http://localhost:3001/updateAccount", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify(requestBody),
-    });
-    if (!response.ok) {
-      const data = await response.json();
-      toast.error(
-        data.message || "An unexpected error occurred. Please try again."
-      );
-      return false;
-    }
-    const data = await response.json();
-    toast.success(data.message || "Profile updated successfully!");
-    return true;
-  } catch (error) {
-    console.error("Error updating profile:", error);
-    return false;
-  }
-}
+//   try {
+//     const response = await fetch("http://localhost:3001/updateAccount", {
+//       method: "PUT",
+//       headers: { "Content-Type": "application/json" },
+//       credentials: "include",
+//       body: JSON.stringify(requestBody),
+//     });
+//     if (!response.ok) {
+//       const data = await response.json();
+//       toast.error(
+//         data.message || "An unexpected error occurred. Please try again."
+//       );
+//       return false;
+//     }
+//     const data = await response.json();
+//     toast.success(data.message || "Profile updated successfully!");
+//     return true;
+//   } catch (error) {
+//     console.error("Error updating profile:", error);
+//     return false;
+//   }
+// }

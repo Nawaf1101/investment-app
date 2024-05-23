@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import { Button, Container, Row, Col, Form } from "react-bootstrap";
 import { toast, ToastContainer } from "react-toastify";
-import { onEdit } from "../functionalities/AccountsFunctions";
 
 import Footer from "../components/Footer";
 import Header from "../components/Header";
@@ -13,10 +12,8 @@ const EditProfile = () => {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const { user, isLoggedIn } = useAccount();
+  const { handelEditProfile } = useAccount();
 
-  if (!isLoggedIn) {
-    return <Navigate to="/login" />;
-  }
   const onSubmit = async (e) => {
     e.preventDefault();
     if (name === user.name && email === user.email && !password) {
@@ -24,12 +21,12 @@ const EditProfile = () => {
       navigate("/");
       return;
     }
-    if (await onEdit(name, user.email, email, password)) {
-      navigate("/");
-    } else {
-      toast.error("Unknown error!");
-    }
+    await handelEditProfile(name, user.email, email, password);
   };
+
+  if (!isLoggedIn) {
+    return <Navigate to="/login" />;
+  }
 
   return (
     <>
