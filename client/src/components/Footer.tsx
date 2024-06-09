@@ -1,10 +1,10 @@
-import React from "react";
+import React from "react"
 import { Container, Row, Col } from "react-bootstrap";
 import "../cssFiles/Custom.css";
 import { BsTwitterX } from "react-icons/bs";
 import { FaLinkedin } from "react-icons/fa";
 
-const Footer = () => {
+const Footer: React.FC<any> = () => {
   return (
     <footer className="footer mt-auto py-3  footer-bg">
       <Container>
@@ -18,7 +18,6 @@ const Footer = () => {
             >
               <FaLinkedin />
             </a>{" "}
-            {/* This adds space between icons */}
             <a
               href="https://x.com/Villacapital1"
               target="_blank"

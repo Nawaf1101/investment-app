@@ -8,7 +8,7 @@ import "../cssFiles/Custom.css";
 import Footer from "../components/Footer";
 import OpportunitiesList from "../components/OpprtunityCard";
 
-const Home = () => {
+const Home: React.FC<any> = () => {
   return (
     <>
       <section

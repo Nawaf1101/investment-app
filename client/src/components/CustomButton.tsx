@@ -3,7 +3,7 @@ import { Link, LinkProps } from "react-router-dom";
 import { Button, ButtonProps } from "react-bootstrap";
 
 // Define a custom button component
-const CustomButton = React.forwardRef<
+const CustomButton: React.FC<any> = React.forwardRef<
   HTMLAnchorElement,
   LinkProps & ButtonProps
 >(({ to, children, ...rest }, ref) => (

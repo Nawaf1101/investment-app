@@ -6,7 +6,7 @@ import Headroom from "react-headroom";
 import "../cssFiles/Custom.css";
 import useAccount from "../hooks/useAccount";
 
-const Header = () => {
+const Header: React.FC<any> = () => {
   const { isLoggedIn, user, handleLogOut } = useAccount();
   return (
     <Headroom>

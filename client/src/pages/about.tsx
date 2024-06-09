@@ -4,7 +4,7 @@ import villaImage from "../images/Villa.png";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
-const about = () => {
+const About: React.FC<any> = () => {
   return (
     <div className="d-flex flex-column min-vh-100">
       {" "}
@@ -39,4 +39,4 @@ const about = () => {
   );
 };
 
-export default about;
+export default About;

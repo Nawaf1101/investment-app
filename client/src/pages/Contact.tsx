@@ -3,7 +3,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Button, Container, Row, Col, Form } from "react-bootstrap";
 
-const Contact = () => {
+const Contact: React.FC<any> = () => {
   return (
     <div className="d-flex flex-column min-vh-100">
       <Header />

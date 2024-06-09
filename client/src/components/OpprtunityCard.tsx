@@ -19,7 +19,7 @@ const calculateProgress = (totalValue, remainingValue) => {
   return (fundedValue / totalValue) * 100;
 };
 
-const OpprtunityCard = () => {
+const OpprtunityCard: React.FC<any> = () => {
   return (
     <Container>
       <Row className="justify-content-center gy-4">

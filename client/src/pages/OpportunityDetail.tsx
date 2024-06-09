@@ -17,7 +17,7 @@ const calculateProgress = (totalValue, remainingValue) => {
   return (fundedValue / totalValue) * 100;
 };
 
-const OpportunityDetail = () => {
+const OpportunityDetail: React.FC<any> = () => {
   const { id } = useParams<{ id: string }>();
   const opportunityId = id ? parseInt(id, 10) : null;
   const opportunity = opportunities.find((opp) => opp.id === opportunityId);

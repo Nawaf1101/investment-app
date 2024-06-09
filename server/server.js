@@ -107,7 +107,7 @@ app.post("/login", async (req, res) => {
   try {
     const user = await dbGet("SELECT * FROM accounts WHERE email = ?", [email]);
     if (!user) {
-      return res.status(401).send("User not found");
+      return res.status(412).send("User not found");
     }
 
     const isValid = await bcrypt.compare(password, user.password);
@@ -139,7 +139,7 @@ app.put("/updateAccount", async (req, res) => {
 
   if (!req.session.user) {
     return res
-      .status(403)
+      .status(401)
       .json({ message: "No session found or unauthorized." });
   }
 
@@ -147,7 +147,7 @@ app.put("/updateAccount", async (req, res) => {
 
   if (email !== currentUserEmail) {
     return res
-      .status(403)
+      .status(401)
       .json({ message: "Unauthorized to update this account." });
   }
 

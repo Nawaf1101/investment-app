@@ -1,32 +1,41 @@
 .custom-nav-link {
   position: relative;
-  overflow: hidden; /* Ensures the pseudo-element is contained within the nav-link's bounds */
+  overflow: hidden;
+  /* Ensures the pseudo-element is contained within the nav-link's bounds */
 }
 
 .custom-nav-link::after {
   content: "";
   display: block;
   position: absolute;
-  width: 80%; /* Ensures the pseudo-element spans the full width */
+  width: 80%;
+  /* Ensures the pseudo-element spans the full width */
   height: 2px;
   bottom: 0;
-  left: 50%; /* Centers the pseudo-element */
-  background-color: #fff; /* Change color as needed */
+  left: 50%;
+  /* Centers the pseudo-element */
+  background-color: #fff;
+  /* Change color as needed */
   transition: transform 0.25s ease-in-out;
-  transform: translateX(-50%) scaleX(0); /* Initialize centered but with no width */
-  transform-origin: center bottom; /* Ensures the scaling is from the center */
-  z-index: 1; /* Ensure it's above the text */
+  transform: translateX(-50%) scaleX(0);
+  /* Initialize centered but with no width */
+  transform-origin: center bottom;
+  /* Ensures the scaling is from the center */
+  z-index: 1;
+  /* Ensure it's above the text */
 }
 
 .custom-nav-link:hover::after,
 .custom-nav-link:focus::after {
-  transform: translateX(-50%) scaleX(1); /* Expand the pseudo-element to full width on hover */
+  transform: translateX(-50%) scaleX(1);
+  /* Expand the pseudo-element to full width on hover */
 }
 
 .btn-light {
-  background-color: #6cb1cc !important;
+  background-color: #5ba09c !important;
   border-color: #6cb1cc !important;
 }
+
 .btn-light:hover {
   background-color: #458da9 !important;
   border-color: #458da9 !important;
@@ -36,11 +45,13 @@
 .pg-primary {
   background: linear-gradient(to bottom, #458da9 21%, #5fa09d 70%) !important;
 }
+
 .nav-bg {
   background-color: #458da9 !important;
   padding-left: 2rem !important;
   padding-right: 1rem !important;
-  transition: all 0.3s ease-in-out; /* Apply transition to all properties */
+  transition: all 0.3s ease-in-out;
+  /* Apply transition to all properties */
 }
 
 .headroom--pinned .nav-bg {
@@ -52,7 +63,8 @@
 }
 
 .headroom--unpinned {
-  top: -110px !important; /* Adjust this value to the height of your header */
+  top: -110px !important;
+  /* Adjust this value to the height of your header */
 }
 
 .btn-primary {
@@ -61,16 +73,16 @@
 }
 
 .btn-primary:hover {
-  background-color: #317f8b !important;
-  border-color: #317f8b !important;
+  background-color: #56aca7 !important;
+  border-color: #56aca7 !important;
 }
 
 .btn-more {
-  background-color: #458da9 !important;
+  background-color: #5ba09c !important;
 }
 
 .btn-more:hover {
-  background-color: #306377 !important;
+  background-color: rgb(46, 88, 105) !important;
 }
 
 .pg-body {
@@ -80,43 +92,59 @@
 .opportunity-card {
   max-width: 350px !important;
   height: 530px !important;
-  border-radius: 20px; /* Rounded corners */
-  overflow: hidden; /* Clip the contents to the border radius */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  border-radius: 20px;
+  /* Rounded corners */
+  overflow: hidden;
+  /* Clip the contents to the border radius */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* Subtle shadow */
 }
 
 .opportunity-card .card-body {
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Distributes space evenly */
+  justify-content: space-between;
+  /* Distributes space evenly */
   padding: 1rem;
-  overflow: hidden; /* Prevents content from overflowing */
+  overflow: hidden;
+  /* Prevents content from overflowing */
 }
 
 .card-img-top {
-  height: 200px; /* Adjust this value to fit your design */
-  object-fit: cover; /* Ensures the image covers the area without stretching */
+  height: 200px;
+  /* Adjust this value to fit your design */
+  object-fit: cover;
+  /* Ensures the image covers the area without stretching */
 }
 
 .progress-custom {
   position: relative;
   width: 100%;
-  height: 20px; /* Match your progress bar height */
+  height: 20px;
+  /* Match your progress bar height */
 }
 
 .card-title {
-  max-height: 3rem; /* Adjust the value as needed */
-  overflow: hidden; /* Hide overflowing text */
-  text-overflow: ellipsis; /* Add ellipsis (...) for truncated text */
+  max-height: 3rem;
+  /* Adjust the value as needed */
+  overflow: hidden;
+  /* Hide overflowing text */
+  text-overflow: ellipsis;
+  /* Add ellipsis (...) for truncated text */
 }
 
 .progress-custom .progress-bar {
-  background-color: #3e8a96 !important; /* Custom progress color */
+  background-color: #56aca7 !important;
+  /* Custom progress color */
   display: flex;
-  align-items: center; /* Vertically center the content of the progress bar */
-  justify-content: center; /* Horizontally center the content of the progress bar */
-  height: 100%; /* Full height of the parent */
+  align-items: center;
+  /* Vertically center the content of the progress bar */
+  justify-content: center;
+  /* Horizontally center the content of the progress bar */
+  height: 100%;
+  /* Full height of the parent */
 }
+
 .progress-custom .progress-bar span {
   position: absolute;
   width: 100%;
@@ -130,7 +158,8 @@
   width: 100%;
   text-align: center;
   top: 0;
-  line-height: 15px; /* Match your progress bar height */
+  line-height: 15px;
+  /* Match your progress bar height */
   color: black;
   font-weight: 400;
   font-size: 0.9rem;
@@ -145,7 +174,7 @@
 
 .footer-bg {
   /* background: linear-gradient(to bottom, #5ba09c 21%, #458DA9 70%) !important; */
-  background-color: #458da9 !important;
+  background-color: #56aca7 !important;
 }
 
 .custom-nav-dropdown .dropdown-menu {
@@ -155,13 +184,15 @@
 }
 
 .text-opportunity {
-  color: #458da9 !important;
+  color: #56aca7 !important;
   font-weight: 600 !important;
 }
+
 .text-opportunity-title {
-  color: #458da9 !important;
+  color: #56aca7 !important;
   font-weight: 800 !important;
 }
+
 .contact-form {
   background-color: #ffffff;
   border-radius: 15px;
@@ -174,7 +205,8 @@
 }
 
 .contact-form .btn-primary {
-  background-color: #489fac; /* Replace with your button's color */
+  background-color: #489fac;
+  /* Replace with your button's color */
   border: none;
   border-radius: 20px;
   padding: 10px;
@@ -183,10 +215,13 @@
 
 /* Optional: Overriding Bootstrap's primary color for the button's hover state */
 .contact-form .btn-primary:hover {
-  background-color: #317f8b; /* A slightly darker shade for hover effect */
+  background-color: #317f8b;
+  /* A slightly darker shade for hover effect */
 }
 
 .img-max-height {
-  max-height: 400px; /* Adjust based on your design needs */
-  object-fit: cover; /* Ensures the image covers the area, might clip some parts */
+  max-height: 400px;
+  /* Adjust based on your design needs */
+  object-fit: cover;
+  /* Ensures the image covers the area, might clip some parts */
 }

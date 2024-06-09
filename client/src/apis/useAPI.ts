@@ -11,94 +11,78 @@ export const useAPI = () => {
     withCredentials: true,
   });
 
-  const onLogin = async (bodyData: LoginData): Promise<boolean> => {
-    try {
-      const body = {
-        email: bodyData.email,
-        password: bodyData.password,
-      };
 
-      const response = await api.post("/login", body);
-      toast.success("Login successful!");
-      return true;
-    } catch (error: any) {
-      if (error.response && error.response.status) {
-        if (error.response.status === 403) {
-          toast.error("Invalid credentials!");
-          throw new Error("Invalid credentials");
-        } else if (error.response.status === 401) {
-          toast.error("User not found!");
-          throw new Error("User not found");
-        }
-      } else {
-        toast.error("Something went wrong");
-        throw new Error("Something went wrong");
-      }
+  axios.interceptors.response.use(function (response) {
+    // Any status code that lie within the range of 2xx cause this function to trigger
+    // Do something with response data
+    return response;
+  }, function (error) {
+    if (error.response.status === 400) {
+      toast.error("No update data provided!");
+    } else if (error.response.status === 401) {
+      toast.error("Unauthorized access");
+    } else if (error.response.status === 403) {
+      toast.error("Invalid credentials")
+    } else if (error.response.status === 409) {
+      toast.error("Email already exists")
+    } else if (error.response.status === 412) {
+      toast.error("User not found")
+    } else if (error.response.status === 500) {
+      toast.error("An internal server error occurred")
     }
+    return Promise.reject(error.response.message);
+  });
+
+
+  const handleLogin = async (bodyData: LoginData): Promise<boolean> => {
+    const body = {
+      email: bodyData.email,
+      password: bodyData.password,
+    };
+
+    const response = await api.post("/login", body);
+    toast.success("Login successful!");
+    return true;
+
   };
 
   const onSignup = async (bodyData: SignupData): Promise<boolean> => {
-    try {
-      const body = {
-        name: bodyData.name,
-        email: bodyData.email,
-        password: bodyData.password,
-      };
+    const body = {
+      name: bodyData.name,
+      email: bodyData.email,
+      password: bodyData.password,
+    };
 
-      const response = await api.post("/accounts", body);
-      toast.success("Account created successfully!");
-      return true;
-    } catch (error: any) {
-      if (error.response && error.response.status === 409) {
-        toast.error("Email already exists");
-        throw new Error("Email already exists");
-      } else {
-        toast.error("Something went wrong");
-        throw new Error("Something went wrong");
-      }
-    }
+    const response = await api.post("/accounts", body);
+    toast.success("Account created successfully!");
+    return true;
   };
 
   const onLogOut = async (): Promise<boolean> => {
-    try {
-      const response = await api.post("/logout");
-      toast.success("Successfully logged out!");
-      return true;
-    } catch (error: any) {
-      toast.error("Something went wrong");
-      return false;
-    }
+    const response = await api.post("/logout");
+    toast.success("Successfully logged out!");
+    return true;
   };
 
   const onEdit = async (bodyData: EditData): Promise<boolean> => {
-    try {
-      const body = {
-        name: bodyData.name,
-        email: bodyData.currentEmail,
-        ...(bodyData.newEmail &&
-          bodyData.newEmail !== bodyData.currentEmail && {
-            newEmail: bodyData.newEmail,
-          }),
-        ...(bodyData.newPassword && { newPassword: bodyData.newPassword }),
-      };
+    const body = {
+      name: bodyData.name,
+      email: bodyData.currentEmail,
+      ...(bodyData.newEmail &&
+        bodyData.newEmail !== bodyData.currentEmail && {
+        newEmail: bodyData.newEmail,
+      }),
+      ...(bodyData.newPassword && { newPassword: bodyData.newPassword }),
+    };
 
-      const response = await api.put("/updateAccount", body);
-      const data = response.data;
-      toast.success(data.message || "Profile updated successfully!");
-      return true;
-    } catch (error: any) {
-      if (error.response) {
-        toast.error(error.response.data.message || "Something went wrong");
-        throw new Error(error.response.data.message || "Something went wrong");
-      } else {
-        toast.error("Something went wrong");
-        throw new Error("Something went wrong");
-      }
-    }
+    const response = await api.put("/updateAccount", body);
+    const data = response.data;
+    toast.success(data.message || "Profile updated successfully!");
+    return true;
   };
 
   return {
-    onLogin,
+    handleLogin,
     onSignup,
     onLogOut,
     onEdit,

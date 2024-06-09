@@ -6,9 +6,9 @@ import {
   useNavigate,
 } from "react-router-dom";
 import Home from "./pages/Home";
-import Signup from "./pages/Signup";
-import Login from "./pages/Login";
-import EditProfile from "./pages/EditProfile";
+import Signup from "./pages/signup/Signup";
+import Login from "./pages/login/Login";
+import EditProfile from "./pages/editProfile/EditProfile";
 import { toast, ToastContainer } from "react-toastify";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
