@@ -1,16 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import villaImage from "../images/Villa2.png";
 import { Button, Navbar, Nav, Dropdown } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import Headroom from "react-headroom";
 import "../cssFiles/Custom.css";
 import useAccount from "../hooks/useAccount";
 
-const Header: React.FC<any> = () => {
+type header = {}
+const Header: React.FC<header> = () => {
   const { isLoggedIn, user, handleLogOut } = useAccount();
+  const location = useLocation();
+  const navbarClass = location.pathname === "/" ? "navhome-bg" : "nav-bg";
+
   return (
     <Headroom>
-      <Navbar variant="dark" expand="lg" className="nav-bg">
+      <Navbar variant="dark" expand="lg" className={navbarClass}>
         <Navbar.Brand href="/">
           <img
             src={villaImage}

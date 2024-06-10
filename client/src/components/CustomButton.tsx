@@ -1,11 +1,15 @@
-import React from "react";
-import { Link, LinkProps } from "react-router-dom";
+import React, { ReactNode } from "react";
+import { Link, To } from "react-router-dom";
 import { Button, ButtonProps } from "react-bootstrap";
 
 // Define a custom button component
-const CustomButton: React.FC<any> = React.forwardRef<
+interface CustomButtonProps extends ButtonProps {
+  to: To;
+  children: ReactNode;
+}
+const CustomButton: React.FC<CustomButtonProps> = React.forwardRef<
   HTMLAnchorElement,
-  LinkProps & ButtonProps
+  CustomButtonProps
 >(({ to, children, ...rest }, ref) => (
   <Button as={Link as any} to={to} ref={ref} {...rest}>
     {children}

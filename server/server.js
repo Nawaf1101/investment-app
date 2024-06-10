@@ -81,6 +81,29 @@ db.run(`CREATE TABLE IF NOT EXISTS accounts (
     password TEXT NOT NULL
 )`);
 
+db.run(`CREATE TABLE IF NOT EXISTS opportunities(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    bref_description TEXT NOT NULL,
+    description TEXT NOT NULL,
+    potential_return TEXT NOT NULL,
+    lowest_investment INTEGER NOT NULL,
+    total_value INTEGER NOT NULL,
+    unit_price INTEGER NOT NULL,
+    number_of_units INTEGER NOT NULL,
+    remaining_value INTEGER NOT NULL
+  
+  )`);
+
+db.run(`CREATE TABLE IF NOT EXISTS investments(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    opportunity_id INTEGER NOT NULL,
+    amount_invested INTEGER NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES accounts(id),
+    FOREIGN KEY (opportunity_id) REFERENCES opportunities(id)
+  )`);
+
 app.post("/accounts", async (req, res) => {
   const { name, email, password } = req.body;
   try {
@@ -211,6 +234,37 @@ app.put("/updateAccount", async (req, res) => {
     res
       .status(500)
       .json({ message: "Failed to update account due to server error." });
+  }
+});
+
+
+app.post("/invest", async (req, res) => {
+  const { email, opprtunityId, amountToInvest } = req.body;
+  try {
+    // Fetch user ID
+    console.log("here");
+
+    const userResult = await dbGet("SELECT id FROM accounts WHERE email = ?", [email]);
+    const userId = userResult?.id; // Assuming dbGet returns an object with id property
+    if (!userId) {
+      return res.status(412).send("User not found");
+    }
+
+    // Insert investment data
+    const insertResult = await dbRun(
+      "INSERT INTO investments (user_id, opportunity_id, amount_invested) VALUES (?, ?, ?)",
+      [userId, opprtunityId, amountToInvest]
+    );
+
+    // Check if the insertion was successful
+    if (insertResult?.lastID) { // Assuming dbRun returns an object with lastID property
+      res.status(200).send("Investment successful");
+    } else {
+      res.status(413).send("Failed to insert investment");
+    }
+  } catch (err) {
+    console.error("Investment error:", err.message);
+    res.status(500).send("An internal server error occurred");
   }
 });
 

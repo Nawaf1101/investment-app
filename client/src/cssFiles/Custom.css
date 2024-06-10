@@ -47,6 +47,15 @@
 }
 
 .nav-bg {
+  background-color: #56aca7 !important;
+  padding-left: 2rem !important;
+  padding-right: 1rem !important;
+  transition: all 0.3s ease-in-out;
+  /* Apply transition to all properties */
+}
+
+
+.navhome-bg {
   background-color: #458da9 !important;
   padding-left: 2rem !important;
   padding-right: 1rem !important;
@@ -54,7 +63,7 @@
   /* Apply transition to all properties */
 }
 
-.headroom--pinned .nav-bg {
+.headroom--pinned .navhome-bg {
   background-color: #5ba09c !important;
   border-bottom-left-radius: 70px !important;
   border-bottom-right-radius: 70px !important;

@@ -1,9 +1,10 @@
 import React from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { Button, Container, Row, Col, Form } from "react-bootstrap";
+import { Button, Container, Row, Form } from "react-bootstrap";
 
-const Contact: React.FC<any> = () => {
+type contact = {}
+const Contact: React.FC<contact> = () => {
   return (
     <div className="d-flex flex-column min-vh-100">
       <Header />

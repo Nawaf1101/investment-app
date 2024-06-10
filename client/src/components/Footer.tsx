@@ -4,7 +4,8 @@ import "../cssFiles/Custom.css";
 import { BsTwitterX } from "react-icons/bs";
 import { FaLinkedin } from "react-icons/fa";
 
-const Footer: React.FC<any> = () => {
+type footer = {}
+const Footer: React.FC<footer> = () => {
   return (
     <footer className="footer mt-auto py-3  footer-bg">
       <Container>

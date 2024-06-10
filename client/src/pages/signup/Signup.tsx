@@ -1,12 +1,8 @@
 import React, { useState } from "react";
-import { Button, Container, Row, Col, Form } from "react-bootstrap";
-import Joi from "joi";
-import { useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { Button, Container, Form } from "react-bootstrap";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import { validate } from "../../functionalities/AccountsFunctions";
-import useAccount from "../../hooks/useAccount";
 import useSignup from "./useSignup";
 
 interface ValidationErrors {
@@ -14,7 +10,8 @@ interface ValidationErrors {
   password?: string;
   name?: string;
 }
-const Signup: React.FC<any> = () => {
+type signup = {}
+const Signup: React.FC<signup> = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [name, setName] = useState<string>("");
@@ -41,10 +38,11 @@ const Signup: React.FC<any> = () => {
             padding: "2rem",
             borderRadius: "15px",
             maxWidth: "400px",
-            marginTop: "10rem",
+            marginTop: "auto",
             boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
           }}
-        >
+          className="align-items-center justify-content-center">
+
           <Form onSubmit={onSubmit}>
             <Form.Group className="mb-3" controlId="formGroupName">
               <Form.Label>Your name</Form.Label>

@@ -1,14 +1,14 @@
 import React from "react";
-import { Button, Container, Row, Col, Form } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import investImage from "../images/Invest.png";
 import waveImage from "../images/wave.png";
-import villaImage from "../images/Villa.png";
 import Header from "../components/Header";
 import "../cssFiles/Custom.css";
 import Footer from "../components/Footer";
 import OpportunitiesList from "../components/OpprtunityCard";
 
-const Home: React.FC<any> = () => {
+type home = {}
+const Home: React.FC<home> = () => {
   return (
     <>
       <section

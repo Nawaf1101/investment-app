@@ -12,26 +12,42 @@ export const useAPI = () => {
   });
 
 
-  axios.interceptors.response.use(function (response) {
-    // Any status code that lie within the range of 2xx cause this function to trigger
-    // Do something with response data
-    return response;
-  }, function (error) {
-    if (error.response.status === 400) {
-      toast.error("No update data provided!");
-    } else if (error.response.status === 401) {
-      toast.error("Unauthorized access");
-    } else if (error.response.status === 403) {
-      toast.error("Invalid credentials")
-    } else if (error.response.status === 409) {
-      toast.error("Email already exists")
-    } else if (error.response.status === 412) {
-      toast.error("User not found")
-    } else if (error.response.status === 500) {
-      toast.error("An internal server error occurred")
+  api.interceptors.response.use(
+    function (response) {
+      // Any status code that lies within the range of 2xx causes this function to trigger
+      return response;
+    },
+    function (error) {
+      // Any status code that falls outside the range of 2xx causes this function to trigger
+      // Do something with response error
+      if (error.response) {
+        const status = error.response.status;
+        console.log('Interceptor error response:', error.response); // Debugging line
+
+        if (status === 400) {
+          toast.error("No update data provided!");
+        } else if (status === 401) {
+          toast.error("Unauthorized access");
+        } else if (status === 403) {
+          toast.error("Invalid credentials");
+        } else if (status === 409) {
+          toast.error("Email already exists");
+        } else if (status === 412) {
+          toast.error("User not found");
+        } else if (status === 413) {
+          toast.error("Failed to insert investment")
+        } else if (status === 500) {
+          toast.error("An internal server error occurred");
+        } else {
+          toast.error("An unexpected error occurred");
+        }
+      } else {
+        toast.error("Network error");
+      }
+
+      return Promise.reject(error);
     }
-    return Promise.reject(error.response.message);
-  });
+  );
 
 
   const handleLogin = async (bodyData: LoginData): Promise<boolean> => {
@@ -40,31 +56,31 @@ export const useAPI = () => {
       password: bodyData.password,
     };
 
-    const response = await api.post("/login", body);
+    await api.post("/login", body);
     toast.success("Login successful!");
     return true;
 
   };
 
-  const onSignup = async (bodyData: SignupData): Promise<boolean> => {
+  const handleSignup = async (bodyData: SignupData): Promise<boolean> => {
     const body = {
       name: bodyData.name,
       email: bodyData.email,
       password: bodyData.password,
     };
 
-    const response = await api.post("/accounts", body);
+    await api.post("/accounts", body);
     toast.success("Account created successfully!");
     return true;
   };
 
-  const onLogOut = async (): Promise<boolean> => {
-    const response = await api.post("/logout");
+  const handleLogout = async (): Promise<boolean> => {
+    await api.post("/logout");
     toast.success("Successfully logged out!");
     return true;
   };
 
-  const onEdit = async (bodyData: EditData): Promise<boolean> => {
+  const handleEdit = async (bodyData: EditData): Promise<boolean> => {
     const body = {
       name: bodyData.name,
       email: bodyData.currentEmail,
@@ -80,12 +96,25 @@ export const useAPI = () => {
     toast.success(data.message || "Profile updated successfully!");
     return true;
   };
+  const handleInvest = async (bodyData: InvestData): Promise<boolean> => {
+    const body = {
+      email: bodyData.email,
+      opprtunityId: bodyData.opprtunityId,
+      amountToInvest: bodyData.amountToInvest
+    };
+    console.log("heeerrrrree");
+
+    await api.post("/invest", body);
+    toast.success("Congratulations to invest!");
+    return true;
+  }
 
   return {
     handleLogin,
-    onSignup,
-    onLogOut,
-    onEdit,
+    handleSignup,
+    handleLogout,
+    handleEdit,
+    handleInvest
   };
 };
 
@@ -103,4 +132,10 @@ export type EditData = {
   currentEmail: string;
   newEmail?: string;
   newPassword?: string;
+};
+
+export type InvestData = {
+  email: string;
+  opprtunityId: number;
+  amountToInvest: number;
 };

@@ -4,7 +4,8 @@ import villaImage from "../images/Villa.png";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
-const About: React.FC<any> = () => {
+type about = {}
+const About: React.FC<about> = () => {
   return (
     <div className="d-flex flex-column min-vh-100">
       {" "}

@@ -1,11 +1,10 @@
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../../store/useAccountStore";
 import { EditData, useAPI } from "../../apis/useAPI";
 
 const useEdit = () => {
   const { setLogin } = useAuthStore();
-  const { onEdit } = useAPI();
+  const { handleEdit } = useAPI();
   const navigate = useNavigate();
 
   const submitEdit = async (
@@ -16,7 +15,7 @@ const useEdit = () => {
   ) => {
     const editData: EditData = { name, currentEmail, newEmail, newPassword };
     try {
-      let status = await onEdit(editData);
+      let status = await handleEdit(editData);
       if (status) {
         setLogin();
         navigate("/");

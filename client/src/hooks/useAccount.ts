@@ -4,7 +4,7 @@ import { useAPI } from "../apis/useAPI";
 
 const useAccount = () => {
   const { isLoggedIn, user, setLogin, setLogout, setUser } = useAuthStore();
-  const { onLogOut } = useAPI();
+  const { handleLogout } = useAPI();
   useEffect(() => {
     fetch("http://localhost:3001/getSession", {
       method: "GET",
@@ -31,9 +31,9 @@ const useAccount = () => {
         setLogout();
         console.error("Error fetching data:", err);
       });
-  }, [setUser, setLogin]);
+  }, [setUser, setLogin, setLogout]);
   const handleLogOut = async (event) => {
-    let isLoggedOut = await onLogOut();
+    let isLoggedOut = await handleLogout();
     if (isLoggedOut) {
       setLogout();
     }

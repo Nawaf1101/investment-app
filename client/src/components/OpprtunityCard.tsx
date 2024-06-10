@@ -1,14 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Card,
   ProgressBar,
-  Button,
   Container,
   Row,
   Col,
-  Modal,
 } from "react-bootstrap";
-import { Link } from "react-router-dom";
 import "../cssFiles/Custom.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import opportunities from "../data/InvestmentData";
@@ -19,7 +16,8 @@ const calculateProgress = (totalValue, remainingValue) => {
   return (fundedValue / totalValue) * 100;
 };
 
-const OpprtunityCard: React.FC<any> = () => {
+type opCard = {}
+const OpprtunityCard: React.FC<opCard> = () => {
   return (
     <Container>
       <Row className="justify-content-center gy-4">

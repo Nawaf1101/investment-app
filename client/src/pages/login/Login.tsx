@@ -11,7 +11,8 @@ interface ValidationErrors {
   email?: string;
   password?: string;
 }
-const Login: React.FC<any> = () => {
+type login = {}
+const Login: React.FC<login> = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -23,6 +24,7 @@ const Login: React.FC<any> = () => {
     const ValidationErrors = validate(email, password);
     setErrors(ValidationErrors || {});
     if (ValidationErrors) return;
+
     submitLogin(email, password);
   };
 
@@ -41,10 +43,10 @@ const Login: React.FC<any> = () => {
             padding: "2rem",
             borderRadius: "15px",
             maxWidth: "400px",
-            marginTop: "10rem",
+            marginTop: "auto",
             boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
           }}
-        >
+          className="align-items-center justify-content-center">
           <Form onSubmit={onSubmit}>
             <Form.Group className="mb-3" controlId="formGroupEmail">
               <Form.Label>Your email</Form.Label>

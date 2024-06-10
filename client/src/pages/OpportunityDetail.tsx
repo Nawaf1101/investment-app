@@ -1,26 +1,30 @@
-import React from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  Button,
-  ProgressBar,
-} from "react-bootstrap";
+import React, { useState } from "react";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import { useParams, Link } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import Modal from "../components/Modal";
 import opportunities from "../data/InvestmentData";
+import useAccount from "../hooks/useAccount";
+import InvestForm from "../components/invest/InvestForm";
+type OpportunityDetailsProps = {};
 
-const calculateProgress = (totalValue, remainingValue) => {
-  const fundedValue = totalValue - remainingValue;
-  return (fundedValue / totalValue) * 100;
-};
-
-const OpportunityDetail: React.FC<any> = () => {
+const OpportunityDetail: React.FC<OpportunityDetailsProps> = () => {
+  const [invest, setInvest] = useState<boolean>(false);
+  const [modalShow, setModalShow] = useState<boolean>(false);
+  const { isLoggedIn } = useAccount();
   const { id } = useParams<{ id: string }>();
   const opportunityId = id ? parseInt(id, 10) : null;
   const opportunity = opportunities.find((opp) => opp.id === opportunityId);
+
+  const investNow = () => {
+    if (isLoggedIn) {
+      setInvest(!invest);
+    } else {
+      setInvest(false);
+      setModalShow(true);
+    }
+  };
 
   if (!opportunity) {
     return (
@@ -44,10 +48,7 @@ const OpportunityDetail: React.FC<any> = () => {
   return (
     <div className="d-flex flex-column min-vh-100">
       <Header />
-      <Container
-        fluid
-        className="d-flex align-items-center justify-content-center flex-grow-1 py-3"
-      >
+      <Container fluid className="d-flex align-items-center justify-content-center flex-grow-1 py-3">
         <Row className="justify-content-center">
           <Col md={6} className="text-center pe-md-0">
             <img
@@ -78,14 +79,22 @@ const OpportunityDetail: React.FC<any> = () => {
             <p className="fs-6 mb-4">{opportunity.lowestInvestment}$</p>
             <Row className="mt-3">
               <Col className="d-flex justify-content-center">
-                <Button as={Link as any} to="/" className="btn-md btn-more">
+                <Button as={Link as any} to="/" style={{ marginRight: "2%" }} className="btn-md btn-more">
                   Go back
+                </Button>
+
+                <Button style={{ marginLeft: "2%" }} onClick={investNow} className="btn-md btn-more">
+                  Invest now!
                 </Button>
               </Col>
             </Row>
           </Col>
         </Row>
       </Container>
+      <div style={{ "paddingBottom": "2%" }}>
+        {invest && isLoggedIn && <InvestForm isLoggedIn={isLoggedIn} lowestToInvest={opportunity.lowestInvestment} remainingAmount={opportunity.remainingValue} totalAmount={opportunity.totalValue} opprtunityId={opportunity.id} />}
+      </div>
+      <Modal show={modalShow} onHide={() => setModalShow(false)} />
       <Footer />
     </div>
   );
