@@ -17,7 +17,7 @@ const EditProfile: React.FC<editProfie> = () => {
   const { user, isLoggedIn } = useAccount();
   const { submitEdit } = useEdit();
 
-  const onSubmit = async (e) => {
+  const onSubmit = async (e: any) => {
     e.preventDefault();
     if (name === user.name && email === user.email && !password) {
       toast.success("No changes applied");

@@ -28,15 +28,16 @@ export function validate(
   email: string,
   password: string,
   name: string = "anonymous"
-) {
+): ValidationErrors | null {
   const options = { abortEarly: false }; // Include all errors, not just the first
   const { error } = schema.validate({ name, email, password }, options);
   if (!error) return null;
 
-  const validationErrors = {};
+  const validationErrors: ValidationErrors = {};
   for (let item of error.details) {
-    validationErrors[item.path[0]] = item.message;
+    validationErrors[item.path[0] as string] = item.message;
   }
+
   return validationErrors;
 }
 
@@ -117,3 +118,6 @@ export function validate(
 //     return false;
 //   }
 // }
+interface ValidationErrors {
+  [key: string]: string;
+}

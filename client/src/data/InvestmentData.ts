@@ -1,4 +1,4 @@
-import House from "C:\\Users\\n7777\\investment-app\\client\\src\\images\\home2.png";
+import House from "C:\\Users\\n7777\\investment-app\\client\\src\\images\\home.png";
 import House2 from "C:\\Users\\n7777\\investment-app\\client\\src\\images\\home2.png";
 import House3 from "C:\\Users\\n7777\\investment-app\\client\\src\\images\\home3.png";
 import Tower from "C:\\Users\\n7777\\investment-app\\client\\src\\images\\tower.png";
@@ -19,6 +19,8 @@ const opportunities = [
     unitPrice: 350000,
     numberOfUnits: 240,
     remainingValue: 82000000,
+    duration: 2,
+    annualRate: 8
   },
   {
     imageUrl: House2,
@@ -33,6 +35,8 @@ const opportunities = [
     unitPrice: 200000,
     numberOfUnits: 300,
     remainingValue: 15000,
+    duration: 2,
+    annualRate: 6
   },
   {
     imageUrl: Tower,
@@ -47,6 +51,8 @@ const opportunities = [
     unitPrice: 500000,
     numberOfUnits: 400,
     remainingValue: 200000000,
+    duration: 6,
+    annualRate: 10
   },
   {
     imageUrl: House3,
@@ -61,6 +67,8 @@ const opportunities = [
     unitPrice: 400000,
     numberOfUnits: 238,
     remainingValue: 10000000,
+    duration: 2,
+    annualRate: 7
   },
   {
     imageUrl: mall,
@@ -75,6 +83,8 @@ const opportunities = [
     unitPrice: 300000,
     numberOfUnits: 400,
     remainingValue: 70000000,
+    duration: 4,
+    annualRate: 9
   },
 ];
 

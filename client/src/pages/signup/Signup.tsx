@@ -19,7 +19,7 @@ const Signup: React.FC<signup> = () => {
 
   const { submitSignup } = useSignup();
 
-  const onSubmit = (event) => {
+  const onSubmit = (event: any) => {
     event.preventDefault();
     const ValidationErrors = validate(email, password);
     setErrors(ValidationErrors || {});

@@ -32,7 +32,7 @@ const useAccount = () => {
         console.error("Error fetching data:", err);
       });
   }, [setUser, setLogin, setLogout]);
-  const handleLogOut = async (event) => {
+  const handleLogOut = async (event: any) => {
     let isLoggedOut = await handleLogout();
     if (isLoggedOut) {
       setLogout();

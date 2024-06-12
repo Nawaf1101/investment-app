@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import investImage from "../images/Invest.png";
 import waveImage from "../images/wave.png";
@@ -6,9 +6,14 @@ import Header from "../components/Header";
 import "../cssFiles/Custom.css";
 import Footer from "../components/Footer";
 import OpportunitiesList from "../components/OpprtunityCard";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalculator } from '@fortawesome/free-solid-svg-icons';
+
 
 type home = {}
 const Home: React.FC<home> = () => {
+  const [calculaterShow, setCalculaterShow] = useState<boolean>(false);
+
   return (
     <>
       <section
@@ -45,7 +50,9 @@ const Home: React.FC<home> = () => {
         <OpportunitiesList />
       </section>
       <div className="pt-5"></div>
-
+      <div className="calculator-icon">
+        <FontAwesomeIcon icon={faCalculator} onClick={() => setCalculaterShow(true)} size="2x" />
+      </div>
       <section>
         <Footer />
       </section>

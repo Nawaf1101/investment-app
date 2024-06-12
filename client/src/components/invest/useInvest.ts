@@ -8,7 +8,7 @@ const useInvest = () => {
 
     const navigate = useNavigate();
 
-    const submitInvest = async (amountToInvest, opprtunityId) => {
+    const submitInvest = async (amountToInvest: number, opprtunityId: number) => {
         try {
             let email = user.email
             let investData: InvestData = { email, amountToInvest, opprtunityId }

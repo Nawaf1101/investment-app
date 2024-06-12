@@ -234,3 +234,21 @@
   object-fit: cover;
   /* Ensures the image covers the area, might clip some parts */
 }
+
+
+.calculator-icon {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: white;
+  border-radius: 100%;
+  padding: 10px;
+  color: #317f8b;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.calculator-icon:hover {
+  background-color: #f0f0f0;
+}

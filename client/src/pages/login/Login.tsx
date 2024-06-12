@@ -19,7 +19,7 @@ const Login: React.FC<login> = () => {
   const [errors, setErrors] = useState<ValidationErrors>({});
   const { isLoggedIn } = useAccount();
   const { submitLogin } = useLogin();
-  const onSubmit = async (event) => {
+  const onSubmit = async (event: any) => {
     event.preventDefault();
     const ValidationErrors = validate(email, password);
     setErrors(ValidationErrors || {});
@@ -30,7 +30,7 @@ const Login: React.FC<login> = () => {
 
   if (isLoggedIn) {
     navigate("/");
-    return;
+    return null;
   }
 
   return (
