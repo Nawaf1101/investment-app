@@ -54,7 +54,6 @@
   /* Apply transition to all properties */
 }
 
-
 .navhome-bg {
   background-color: #458da9 !important;
   padding-left: 2rem !important;
@@ -186,10 +185,42 @@
   background-color: #56aca7 !important;
 }
 
+/* Custom styles for the dropdown toggle to remove background */
+.custom-dropdown-toggle {
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.custom-dropdown-toggle:focus,
+.custom-dropdown-toggle:hover,
+.custom-dropdown-toggle:active {
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.custom-dropdown-toggle:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.custom-dropdown-toggle .bi-person-circle {
+  color: white;
+  font-size: 1.5em;
+}
+
+/* Ensure dropdown menu is correctly aligned */
 .custom-nav-dropdown .dropdown-menu {
   left: 0 !important;
+  background-color: white !important;
+
   right: 0 !important;
-  transform: translateX(-100%);
+  transform: translateX(-100%) !important;
+  background-color: #343a40; /* Adjust background color if needed */
+  border: none;
 }
 
 .text-opportunity {
@@ -234,7 +265,6 @@
   object-fit: cover;
   /* Ensures the image covers the area, might clip some parts */
 }
-
 
 .calculator-icon {
   position: fixed;

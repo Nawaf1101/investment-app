@@ -5,8 +5,10 @@ import { NavLink, useLocation } from "react-router-dom";
 import Headroom from "react-headroom";
 import "../cssFiles/Custom.css";
 import useAccount from "../hooks/useAccount";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-type header = {}
+type header = {};
 const Header: React.FC<header> = () => {
   const { isLoggedIn, user, handleLogOut } = useAccount();
   const location = useLocation();
@@ -42,23 +44,19 @@ const Header: React.FC<header> = () => {
         </Navbar.Collapse>
         <div className="ms-auto">
           {isLoggedIn ? (
-            <Dropdown align="start" className="custom-nav-dropdown">
+            <Dropdown align="end" className="custom-nav-dropdown">
               <Dropdown.Toggle
-                variant="light"
                 id="dropdown-basic"
-                className="mx-2"
+                className="custom-dropdown-toggle mx-2"
               >
-                <i
-                  className="bi bi-person-circle"
-                  style={{ color: "white" }}
-                ></i>
+                <i className="bi bi-person-circle"></i>
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.ItemText>Name: {user.name}</Dropdown.ItemText>
                 <Dropdown.ItemText>Email: {user.email}</Dropdown.ItemText>
                 <Dropdown.Item
                   href="/editprofile"
-                  style={{ backgroundColor: "#5da6c2" }}
+                  style={{ backgroundColor: "#5da6c2", color: "#fff" }}
                 >
                   Edit Profile
                 </Dropdown.Item>
@@ -66,7 +64,7 @@ const Header: React.FC<header> = () => {
                   onClick={handleLogOut}
                   style={{ backgroundColor: "#f01132", color: "#fff" }}
                 >
-                  Logout!
+                  Logout
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
