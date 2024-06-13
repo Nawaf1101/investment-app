@@ -3,9 +3,22 @@ import House2 from "C:\\Users\\n7777\\investment-app\\client\\src\\images\\home2
 import House3 from "C:\\Users\\n7777\\investment-app\\client\\src\\images\\home3.png";
 import Tower from "C:\\Users\\n7777\\investment-app\\client\\src\\images\\tower.png";
 import mall from "C:\\Users\\n7777\\investment-app\\client\\src\\images\\mall.png";
+import { useState } from "react";
 
 // Dummy data for investment opportunities
-const opportunities = [
+const useInvestmentData = () => {
+  const [opportunities, setOpportunities] = useState(investmentData);
+
+  const editOpportunities = (newData: any) => {
+    setOpportunities(newData);
+  };
+
+  return { opportunities, editOpportunities };
+};
+
+export default useInvestmentData;
+
+const investmentData = [
   {
     imageUrl: House,
     id: 1,
@@ -20,7 +33,8 @@ const opportunities = [
     numberOfUnits: 240,
     remainingValue: 82000000,
     duration: 2,
-    annualRate: 8
+    annualRate: 8,
+    riskLevel: "Medium",
   },
   {
     imageUrl: House2,
@@ -36,7 +50,8 @@ const opportunities = [
     numberOfUnits: 300,
     remainingValue: 15000,
     duration: 2,
-    annualRate: 6
+    annualRate: 6,
+    riskLevel: "Low",
   },
   {
     imageUrl: Tower,
@@ -52,7 +67,8 @@ const opportunities = [
     numberOfUnits: 400,
     remainingValue: 200000000,
     duration: 6,
-    annualRate: 10
+    annualRate: 10,
+    riskLevel: "High",
   },
   {
     imageUrl: House3,
@@ -68,7 +84,8 @@ const opportunities = [
     numberOfUnits: 238,
     remainingValue: 10000000,
     duration: 2,
-    annualRate: 7
+    annualRate: 7,
+    riskLevel: "Medium",
   },
   {
     imageUrl: mall,
@@ -84,8 +101,7 @@ const opportunities = [
     numberOfUnits: 400,
     remainingValue: 70000000,
     duration: 4,
-    annualRate: 9
+    annualRate: 9,
+    riskLevel: "Medium",
   },
 ];
-
-export default opportunities;

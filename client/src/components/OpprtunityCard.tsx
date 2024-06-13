@@ -2,10 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { Card, ProgressBar, Container, Row, Col } from "react-bootstrap";
 import "../cssFiles/Custom.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import opportunities from "../data/InvestmentData";
 import CustomButton from "./CustomButton";
 import { useAnimation, motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import useInvestmentData from "../data/useInvestmentData";
 
 const calculateProgress = (totalValue: number, remainingValue: number) => {
   const fundedValue = totalValue - remainingValue;
@@ -15,6 +15,7 @@ const calculateProgress = (totalValue: number, remainingValue: number) => {
 const OpportunityCard = () => {
   const controls = useAnimation();
   const [isHovered, setHovered] = useState(false);
+  const { opportunities } = useInvestmentData();
   const scope = useRef(null);
   const [ref, inView] = useInView({
     threshold: 0.01, // Adjust the threshold value as needed
@@ -57,7 +58,10 @@ const OpportunityCard = () => {
                   className="card-img-top"
                 />
                 <Card.Body className="d-flex flex-column justify-content-between">
-                  <Card.Title className="text-center" style={{ color: "#226570" }}>
+                  <Card.Title
+                    className="text-center"
+                    style={{ color: "#226570" }}
+                  >
                     {opportunity.name}
                   </Card.Title>
                   <Card.Text className="text-left">
@@ -71,11 +75,18 @@ const OpportunityCard = () => {
                       className="progress-custom"
                     >
                       <ProgressBar
-                        now={calculateProgress(opportunity.totalValue, opportunity.remainingValue)}
+                        now={calculateProgress(
+                          opportunity.totalValue,
+                          opportunity.remainingValue
+                        )}
                       />
                     </motion.div>
                     <div className="progress-text">
-                      {calculateProgress(opportunity.totalValue, opportunity.remainingValue).toFixed(2)}%
+                      {calculateProgress(
+                        opportunity.totalValue,
+                        opportunity.remainingValue
+                      ).toFixed(2)}
+                      %
                     </div>
                   </div>
                   <Row className="mt-3">
@@ -96,12 +107,14 @@ const OpportunityCard = () => {
                   <Row>
                     <Col xs={12} md={6} className="text-left">
                       <Card.Text>
-                        <strong>Potential return: </strong>{opportunity.potentialReturn}
+                        <strong>Potential return: </strong>
+                        {opportunity.potentialReturn}
                       </Card.Text>
                     </Col>
                     <Col xs={12} md={6} className="text-left">
                       <Card.Text>
-                        <strong>Time horizon: </strong><br />
+                        <strong>Time horizon: </strong>
+                        <br />
                         {opportunity.duration.toLocaleString()} Years
                       </Card.Text>
                     </Col>
@@ -109,7 +122,8 @@ const OpportunityCard = () => {
                   <div className="mt-1" />
                   <Row>
                     <Card.Text>
-                      <strong>Annual rate: </strong>{opportunity.annualRate}%
+                      <strong>Annual rate: </strong>
+                      {opportunity.annualRate}%
                     </Card.Text>
                   </Row>
                   <CustomButton

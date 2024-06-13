@@ -6,11 +6,11 @@ import Header from "../components/Header";
 import "../cssFiles/Custom.css";
 import Footer from "../components/Footer";
 import OpportunitiesList from "../components/OpprtunityCard";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalculator } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCalculator } from "@fortawesome/free-solid-svg-icons";
+import Calculator from "../components/Calculator";
 
-
-type home = {}
+type home = {};
 const Home: React.FC<home> = () => {
   const [calculaterShow, setCalculaterShow] = useState<boolean>(false);
 
@@ -51,8 +51,16 @@ const Home: React.FC<home> = () => {
       </section>
       <div className="pt-5"></div>
       <div className="calculator-icon">
-        <FontAwesomeIcon icon={faCalculator} onClick={() => setCalculaterShow(true)} size="2x" />
+        <FontAwesomeIcon
+          icon={faCalculator}
+          onClick={() => setCalculaterShow(true)}
+          size="2x"
+        />
       </div>
+      <Calculator
+        show={calculaterShow}
+        onHide={() => setCalculaterShow(false)}
+      />
       <section>
         <Footer />
       </section>

@@ -1,27 +1,49 @@
 import { useNavigate } from "react-router-dom";
-import { InvestData, useAPI } from "../../apis/useAPI";
-import useAccount from "../../hooks/useAccount";
+import { toast } from "react-toastify";
+import useInvestmentData from "../../data/useInvestmentData";
 
 const useInvest = () => {
-    const { handleInvest } = useAPI();
-    const { user } = useAccount();
+  const navigate = useNavigate();
+  const { opportunities, editOpportunities } = useInvestmentData();
 
-    const navigate = useNavigate();
+  const submitInvest = async (
+    amountToInvest: number,
+    opportunityId: number
+  ) => {
+    try {
+      // Find the opportunity by its ID
+      const opportunityIndex = opportunities.findIndex(
+        (op) => op.id === opportunityId
+      );
 
-    const submitInvest = async (amountToInvest: number, opprtunityId: number) => {
-        try {
-            let email = user.email
-            let investData: InvestData = { email, amountToInvest, opprtunityId }
-            let status = await handleInvest(investData)
-            if (status)
-                navigate("/")
-        } catch (error: any) { }
-    };
+      if (opportunityIndex !== -1) {
+        // Subtract the amount to invest from the remaining value
+        const updatedOpportunities = [...opportunities];
+        console.log(opportunityIndex);
+        updatedOpportunities[opportunityIndex].remainingValue =
+          updatedOpportunities[opportunityIndex].remainingValue -
+          amountToInvest;
+        console.log(updatedOpportunities);
 
-    return {
-        submitInvest
+        // Update the opportunities state
+        editOpportunities(updatedOpportunities);
+
+        // Log or perform any additional actions needed after the update
+        navigate("/");
+        toast.success(`Congratulations on investing with us!`);
+      } else {
+        toast.error(`Opportunity with ID ${opportunityId} not found.`);
+      }
+    } catch (error: any) {
+      toast.error(
+        `An error occurred while submitting the investment: ${error.message}`
+      );
     }
+  };
 
-}
+  return {
+    submitInvest,
+  };
+};
 
 export default useInvest;
