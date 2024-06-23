@@ -22,7 +22,7 @@ const db = new sqlite3.Database(process.env.DATABASE_PATH, (err) => {
 app.use(express.json());
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: "*",
     methods: ["GET", "POST", "OPTIONS", "PUT"],
     credentials: true,
   })
@@ -275,6 +275,8 @@ app.post("/invest", async (req, res) => {
     res.status(500).send("An internal server error occurred");
   }
 });
+
+
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
