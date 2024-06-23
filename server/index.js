@@ -59,7 +59,7 @@ app.get("/getSession", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  return res.json("hello");
+  return res("hello");
 });
 
 const dbGet = (sql, params) =>
