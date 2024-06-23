@@ -8,7 +8,7 @@ const useOpprtunitiesData = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch("http://localhost:3001/opprtunities", {
+                const response = await fetch("https://investment-app-api.onrender.com:10000/opprtunities", {
                     method: "GET",
                     credentials: "include",
                 });
