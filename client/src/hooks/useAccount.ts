@@ -6,7 +6,7 @@ const useAccount = () => {
   const { isLoggedIn, user, setLogin, setLogout, setUser } = useAuthStore();
   const { handleLogout } = useAPI();
   useEffect(() => {
-    fetch("http://localhost:3001/getSession", {
+    fetch("https://investment-app-api.onrender.com:10000/getSession", {
       method: "GET",
       credentials: "include",
     })
