@@ -146,6 +146,8 @@ app.post("/login", async (req, res) => {
 
     req.session.user = { email: user.email, name: user.name };
     res.status(200).send("Login successful");
+    console.log(req.session.user);
+
   } catch (err) {
     console.error("Login error:", err.message);
     res.status(500).send("An internal server error occurred");
