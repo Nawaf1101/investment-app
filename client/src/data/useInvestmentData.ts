@@ -1,8 +1,8 @@
-import House from "C:\\Users\\n7777\\investment-app\\client\\src\\images\\home.png";
-import House2 from "C:\\Users\\n7777\\investment-app\\client\\src\\images\\home2.png";
-import House3 from "C:\\Users\\n7777\\investment-app\\client\\src\\images\\home3.png";
-import Tower from "C:\\Users\\n7777\\investment-app\\client\\src\\images\\tower.png";
-import mall from "C:\\Users\\n7777\\investment-app\\client\\src\\images\\mall.png";
+import House from "./images/home.png";
+import House2 from "./images/home2.png";
+import House3 from "./images/home3.png";
+import Tower from "./images/tower.png";
+import mall from "./images/mall.png";
 import { useState } from "react";
 
 // Dummy data for investment opportunities
