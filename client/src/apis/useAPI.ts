@@ -2,7 +2,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 export const useAPI = () => {
-  const BASE_URL = "https://investment-app-api.onrender.com:10000";
+  const BASE_URL = "https://investment-app-api.onrender.com";
   const api = axios.create({
     baseURL: BASE_URL,
     headers: {
