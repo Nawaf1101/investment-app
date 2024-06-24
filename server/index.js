@@ -41,7 +41,8 @@ app.use(
     cookie: {
       httpOnly: true,
       expires: new Date(Date.now() + 86400000), // 24 hours
-      secure: false, // Should be set to true in production if using HTTPS
+      secure: true, // Set to true for HTTPS
+      sameSite: "None", // Ensure cookies are sent across sites
     },
   })
 );
@@ -81,42 +82,38 @@ const dbRun = (sql, params) =>
 
 db.run(`CREATE TABLE IF NOT EXISTS accounts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT ,
+    name TEXT,
     email TEXT UNIQUE,
-    password TEXT 
+    password TEXT
 )`);
 
 db.run(`CREATE TABLE IF NOT EXISTS opportunities(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT ,
-    bref_description TEXT ,
-    description TEXT ,
-    potential_return TEXT ,
-    lowest_investment INTEGER ,
-    total_value INTEGER ,
-    unit_price INTEGER ,
+    name TEXT,
+    bref_description TEXT,
+    description TEXT,
+    potential_return TEXT,
+    lowest_investment INTEGER,
+    total_value INTEGER,
+    unit_price INTEGER,
     number_of_units INTEGER NULL,
     remaining_value INTEGER,
     imageUrl TEXT
-
-  
-  )`);
+)`);
 
 db.run(`CREATE TABLE IF NOT EXISTS investments(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
-    opportunity_id INTEGER ,
-    amount_invested INTEGER ,
+    opportunity_id INTEGER,
+    amount_invested INTEGER,
     FOREIGN KEY (user_id) REFERENCES accounts(id),
     FOREIGN KEY (opportunity_id) REFERENCES opportunities(id)
-  )`);
+)`);
 
 app.post("/accounts", async (req, res) => {
   const { name, email, password } = req.body;
   try {
-    const row = await dbGet("SELECT name FROM accounts WHERE email = ?", [
-      email,
-    ]);
+    const row = await dbGet("SELECT name FROM accounts WHERE email = ?", [email]);
     if (row) return res.status(409).send("Email already exists.");
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -170,17 +167,13 @@ app.put("/updateAccount", async (req, res) => {
   const { name, email, newEmail, password, newPassword } = req.body;
 
   if (!req.session.user) {
-    return res
-      .status(401)
-      .json({ message: "No session found or unauthorized." });
+    return res.status(401).json({ message: "No session found or unauthorized." });
   }
 
   const currentUserEmail = req.session.user.email;
 
   if (email !== currentUserEmail) {
-    return res
-      .status(401)
-      .json({ message: "Unauthorized to update this account." });
+    return res.status(401).json({ message: "Unauthorized to update this account." });
   }
 
   try {
@@ -188,10 +181,7 @@ app.put("/updateAccount", async (req, res) => {
     let values = [];
 
     if (newEmail && newEmail !== currentUserEmail) {
-      const emailExists = await dbGet(
-        "SELECT email FROM accounts WHERE email = ?",
-        [newEmail]
-      );
+      const emailExists = await dbGet("SELECT email FROM accounts WHERE email = ?", [newEmail]);
       if (emailExists) {
         return res.status(409).json({ message: "Email already in use." });
       }
@@ -200,15 +190,10 @@ app.put("/updateAccount", async (req, res) => {
     }
 
     if (newPassword && password) {
-      const user = await dbGet(
-        "SELECT password FROM accounts WHERE email = ?",
-        [currentUserEmail]
-      );
+      const user = await dbGet("SELECT password FROM accounts WHERE email = ?", [currentUserEmail]);
       const isValid = await bcrypt.compare(password, user.password);
       if (!isValid) {
-        return res
-          .status(403)
-          .json({ message: "Current password is incorrect." });
+        return res.status(403).json({ message: "Current password is incorrect." });
       }
       const hashedPassword = await bcrypt.hash(newPassword, 10);
       updates.password = hashedPassword;
@@ -221,9 +206,7 @@ app.put("/updateAccount", async (req, res) => {
     }
 
     if (Object.keys(updates).length > 0) {
-      const setParts = Object.keys(updates)
-        .map((key) => `${key} = ?`)
-        .join(", ");
+      const setParts = Object.keys(updates).map((key) => `${key} = ?`).join(", ");
       const sql = `UPDATE accounts SET ${setParts} WHERE email = ?`;
       values.push(currentUserEmail);
 
@@ -240,9 +223,7 @@ app.put("/updateAccount", async (req, res) => {
     }
   } catch (err) {
     console.error("Error updating account:", err.message);
-    res
-      .status(500)
-      .json({ message: "Failed to update account due to server error." });
+    res.status(500).json({ message: "Failed to update account due to server error." });
   }
 });
 
@@ -252,9 +233,7 @@ app.post("/invest", async (req, res) => {
     // Fetch user ID
     console.log("here");
 
-    const userResult = await dbGet("SELECT id FROM accounts WHERE email = ?", [
-      email,
-    ]);
+    const userResult = await dbGet("SELECT id FROM accounts WHERE email = ?", [email]);
     const userId = userResult?.id; // Assuming dbGet returns an object with id property
     if (!userId) {
       return res.status(412).send("User not found");
@@ -278,8 +257,6 @@ app.post("/invest", async (req, res) => {
     res.status(500).send("An internal server error occurred");
   }
 });
-
-
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
