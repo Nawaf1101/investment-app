@@ -40,7 +40,6 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      expires: new Date(Date.now() + 86400000), // 24 hours
       secure: true, // Must be true if using HTTPS
       sameSite: "None", // Necessary for cross-site cookies
     },
