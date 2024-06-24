@@ -7,7 +7,6 @@ export const useAPI = () => {
     baseURL: BASE_URL,
     headers: {
       "Content-Type": "application/json",
-                  'Access-Control-Allow-Origin': 'null',
     },
     withCredentials: true,
   });
