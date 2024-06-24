@@ -20,13 +20,7 @@ const db = new sqlite3.Database(process.env.DATABASE_PATH, (err) => {
 });
 
 app.use(express.json());
-app.use(
-  cors({
-    origin: "https://investment-app-pi.vercel.app",
-    methods: ["GET", "POST", "OPTIONS", "PUT"],
-    credentials: true,
-  })
-);
+
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
