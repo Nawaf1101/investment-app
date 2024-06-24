@@ -33,6 +33,8 @@ app.use(session({
   cookie: {
     secure: true, // Ensure secure cookies if your site is HTTPS
     sameSite: 'None', // Required for cross-site cookies
+    expires: new Date(Date.now() + 86400000), // 24 hours
+
   },
 }));
 
