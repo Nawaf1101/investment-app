@@ -48,7 +48,6 @@ app.use(
 );
 
 app.get("/getSession", (req, res) => {
-  console.log(req.session.user);
   if (req.session.user) {
     return res.json({
       valid: true,
