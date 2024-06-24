@@ -41,11 +41,17 @@ app.use(
     cookie: {
       httpOnly: true,
       expires: new Date(Date.now() + 86400000), // 24 hours
-      secure: true, // Set to true for HTTPS
-      sameSite: "None", // Ensure cookies are sent across sites
+      secure: true, // Must be true if using HTTPS
+      sameSite: "None", // Necessary for cross-site cookies
     },
   })
 );
+
+app.use((req, res, next) => {
+  console.log("Session ID:", req.sessionID);
+  console.log("Session:", req.session);
+  next();
+});
 
 app.get("/getSession", (req, res) => {
   if (req.session.user) {
@@ -133,24 +139,37 @@ app.post("/login", async (req, res) => {
   try {
     const user = await dbGet("SELECT * FROM accounts WHERE email = ?", [email]);
     if (!user) {
+      console.log("User not found");
       return res.status(412).send("User not found");
     }
 
     const isValid = await bcrypt.compare(password, user.password);
     if (!isValid) {
+      console.log("Invalid credentials");
       return res.status(403).send("Invalid credentials");
     }
 
     req.session.user = { email: user.email, name: user.name };
+    console.log("Login successful, session:", req.session);
     res.status(200).send("Login successful");
-    console.log(req.session.user);
-
   } catch (err) {
     console.error("Login error:", err.message);
     res.status(500).send("An internal server error occurred");
   }
 });
 
+app.get("/getSession", (req, res) => {
+  console.log("Getting session:", req.session);
+  if (req.session.user) {
+    return res.json({
+      valid: true,
+      name: req.session.user.name,
+      email: req.session.user.email,
+    });
+  } else {
+    return res.json({ valid: false });
+  }
+});
 app.post("/logout", (req, res) => {
   req.session.destroy((err) => {
     if (err) {
