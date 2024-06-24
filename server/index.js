@@ -19,32 +19,25 @@ const db = new sqlite3.Database(process.env.DATABASE_PATH, (err) => {
   console.log("Connected to the SQLite database.");
 });
 
-app.use(express.json());
-app.use(
-  cors({
-    origin: "https://investment-app-pi.vercel.app",
-    methods: ["GET", "POST", "OPTIONS", "PUT"],
-    credentials: true,
-  })
-);
+app.use(cors({
+  origin: 'https://investment-app-pi.vercel.app', // Your frontend URL
+  credentials: true, // Allow cookies to be sent
+}));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(
-  session({
-    store: new SQLiteStore({
-      db: "sessions.db",
-      dir: "./",
-    }),
-    secret: "Secret",
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      httpOnly: true,
-      secure: true, // Must be true if using HTTPS
-      sameSite: "None", // Necessary for cross-site cookies
-    },
-  })
-);
+app.use(session({
+  store: new SQLiteStore({ db: 'sessions.db', dir: './' }),
+  secret: 'Secret',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    secure: true, // Ensure secure cookies if your site is HTTPS
+    sameSite: 'None', // Required for cross-site cookies
+  },
+}));
+
+app.use(express.json());
 
 app.use((req, res, next) => {
   console.log("Session ID:", req.sessionID);
